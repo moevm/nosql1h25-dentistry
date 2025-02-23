@@ -1,0 +1,16 @@
+Django==3.2.3
+djangorestframework==3.12.4
+djoser==2.1.0
+webcolors==1.11.1
+Pillow==9.5.0
+pytest==6.2.4
+pytest-django==4.4.0
+pytest-pythonpath==0.7.3
+setuptools==75.8.0
+mongoengine==0.29.1
+Cython
+django-filter==23.1
+django-urlshortner
+drf-extra-fields
+python-dotenv
+django_mongodb_engine
