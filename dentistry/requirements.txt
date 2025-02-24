@@ -14,3 +14,4 @@ django-urlshortner
 drf-extra-fields
 python-dotenv
 django_mongodb_engine
+djongo

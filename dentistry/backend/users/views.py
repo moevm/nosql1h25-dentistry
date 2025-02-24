@@ -57,3 +57,8 @@ class CustomUserViewSet(UserViewSet):
             return Response(status=204)
         else:
             return Response({"errors": "У вас нет аватара"}, status=400)
+
+    def perform_update(self, serializer):
+        if not self.request.user.is_support and 'role_id' in serializer.validated_data:
+            return Response({"errors": "У вас нет прав"}, status=403)
+        super().perform_update(serializer)
