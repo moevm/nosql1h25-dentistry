@@ -44,6 +44,10 @@ class CustomUser(AbstractUser):
         default=None,
         verbose_name="Аватар",
     )
+    
+    class Meta:
+        app_label = 'users'
+
 
     role_id = models.PositiveIntegerField(_('Role'), default=ClientRole.id  )
 
