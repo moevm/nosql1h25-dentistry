@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django_filters',
     # 'urlshortner',
     'users.apps.UsersConfig',
-    'doctors',
+    'dentists.apps.DentistsConfig',
 ]
 
 MIDDLEWARE = [
