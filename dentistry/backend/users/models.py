@@ -44,6 +44,16 @@ class CustomUser(AbstractUser):
         default=None,
         verbose_name="Аватар",
     )
+    
+    class Meta:
+        app_label = 'users'
+
+    assigned_dentist = models.ForeignKey(
+            'self',
+            on_delete=models.SET_NULL,
+            null=True,
+            blank=True,
+            related_name='patients')
 
     role_id = models.PositiveIntegerField(_('Role'), default=ClientRole.id  )
 
