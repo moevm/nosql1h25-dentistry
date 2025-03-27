@@ -1,5 +1,9 @@
 from rest_framework import permissions
+from rest_framework.request import Request
+from users.models import DentistRole
 
 class IsDentist(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.is_dentist
+        if not hasattr(request, 'user'):
+            return False
+        return request.user.is_authenticated and request.user.role_id == DentistRole.id

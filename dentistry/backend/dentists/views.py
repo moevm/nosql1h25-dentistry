@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .permissions import IsDentist
+from backend.dentists.permissions import IsDentist
 from users.models import CustomUser, DentistRole
 from users.serializers import CustomUserSerializer
 
@@ -14,7 +14,7 @@ class DentistViewSet(viewsets.ModelViewSet):
     @action(
         detail=False,
         methods=['GET', 'PUT', 'PATCH'],
-        permission_classes=[IsDentist]
+        permission_classes=[IsDentist]  # Только для врачей
     )
     def me(self, request):
         user = request.user
