@@ -8,6 +8,7 @@ from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 
 from .paginations import PageLimitPagination
 
@@ -58,7 +59,46 @@ class CustomUserViewSet(UserViewSet):
         else:
             return Response({"errors": "У вас нет аватара"}, status=400)
 
+    def validate_additional_info(self, additional_info, role_class):
+        """Проверка и валидация полей additional_info для пользователя."""
+
+        schema = role_class.schema
+        allowed_fields = schema.get("fields", set())
+        required_fields = schema.get("required_fields", set())
+
+        # Если дополнительная информация передана
+        if additional_info:
+            info_keys = set(additional_info.keys())
+
+            # Проверка на недопустимые поля
+            extra_fields = info_keys - allowed_fields
+            if extra_fields:
+                return Response({
+                    "additional_info": f"Недопустимые поля: {', '.join(extra_fields)}"
+                }, status=400)
+
+            # Проверка на отсутствие обязательных полей
+            missing_fields = required_fields - info_keys
+            if missing_fields:
+                return Response({
+                    "additional_info": f"Обязательные поля отсутствуют: {', '.join(missing_fields)}"
+                }, status=400)
+
+        return additional_info
+
     def perform_update(self, serializer):
-        if not self.request.user.is_support and 'role_id' in serializer.validated_data:
+        user = self.request.user
+        data = serializer.validated_data
+
+        if not self.request.user.is_support and 'role_id' in data:
             return Response({"errors": "У вас нет прав"}, status=403)
+
+        role_class = user.current_role()
+
+        additional_info = data.get('additional_info', {})
+        validation_response = self.validate_additional_info(additional_info, role_class)
+
+        if isinstance(validation_response, Response):
+            return validation_response
+
         super().perform_update(serializer)
