@@ -77,7 +77,7 @@ class CustomUser(AbstractUser):
         verbose_name='Аватар',
     )
 
-    phone = models.CharField(_('Телефон'), max_length=20)
+    phone = models.CharField(_('Телефон'), null=True, max_length=20)
     birth_date = models.DateField(_('Дата рождения'), null=True, blank=True)
 
     additional_info = models.JSONField(_('Доп. информация'), default=dict, blank=True)
