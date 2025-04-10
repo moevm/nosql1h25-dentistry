@@ -66,11 +66,7 @@ class CustomUserViewSet(UserViewSet):
         if not self.request.user.is_support and 'role_id' in data:
             return Response({"errors": "У вас нет прав"}, status=403)
 
-        role_id = data.get('role_id', user.role_id)
-        role_class = user.ROLES.get(role_id)
-
-        if not role_class:
-            raise ValidationError({"role_id": "Неизвестная роль"})
+        role_class = user.current_role()
 
         schema = role_class.schema
         allowed_fields = schema.get("fields", set())
