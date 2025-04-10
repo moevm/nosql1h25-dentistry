@@ -59,6 +59,33 @@ class CustomUserViewSet(UserViewSet):
         else:
             return Response({"errors": "У вас нет аватара"}, status=400)
 
+    def validate_additional_info(self, additional_info, role_class):
+        """Проверка и валидация полей additional_info для пользователя."""
+
+        schema = role_class.schema
+        allowed_fields = schema.get("fields", set())
+        required_fields = schema.get("required_fields", set())
+
+        # Если дополнительная информация передана
+        if additional_info:
+            info_keys = set(additional_info.keys())
+
+            # Проверка на недопустимые поля
+            extra_fields = info_keys - allowed_fields
+            if extra_fields:
+                return Response({
+                    "additional_info": f"Недопустимые поля: {', '.join(extra_fields)}"
+                }, status=400)
+
+            # Проверка на отсутствие обязательных полей
+            missing_fields = required_fields - info_keys
+            if missing_fields:
+                return Response({
+                    "additional_info": f"Обязательные поля отсутствуют: {', '.join(missing_fields)}"
+                }, status=400)
+
+        return additional_info
+
     def perform_update(self, serializer):
         user = self.request.user
         data = serializer.validated_data
@@ -68,26 +95,10 @@ class CustomUserViewSet(UserViewSet):
 
         role_class = user.current_role()
 
-        schema = role_class.schema
-        allowed_fields = schema.get("fields", set())
-        required_fields = schema.get("required_fields", set())
+        additional_info = data.get('additional_info', {})
+        validation_response = self.validate_additional_info(additional_info, role_class)
 
-        # Получаем additional_info (новое или текущее)
-        additional_info = data.get('additional_info', user.additional_info or {})
-
-        if additional_info:
-            info_keys = set(additional_info.keys())
-
-            extra_fields = info_keys - allowed_fields
-            missing_fields = required_fields - info_keys
-
-            if extra_fields:
-                raise ValidationError({
-                    "additional_info": f"Недопустимые поля: {', '.join(extra_fields)}"
-                })
-            if missing_fields:
-                raise ValidationError({
-                    "additional_info": f"Обязательные поля отсутствуют: {', '.join(missing_fields)}"
-                })
+        if isinstance(validation_response, Response):
+            return validation_response
 
         super().perform_update(serializer)
