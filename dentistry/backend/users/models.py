@@ -12,6 +12,11 @@ class Role:
 
     title: str
 
+    schema: dict = {
+        "fields": set(),
+        "required_fields": set()
+    }
+
 
 class SupportRole(Role):
     """Поддержка."""
@@ -20,12 +25,27 @@ class SupportRole(Role):
     alias: str = 'support'
     title: str = _('Support')
 
+    schema: dict = {
+        "fields": {},
+        "required_fields": {}
+    }
+
+
 class ClientRole(Role):
     """Клиент."""
 
     id: int = 2
     alias: str = 'client'
     title: str = _('Client')
+
+    schema: dict = {
+        "fields": {
+            "allergy",
+            "insurance_policy_number"
+        },
+        "required_fields": {}
+    }
+
 
 class DentistRole(Role):
     """Дантист."""
@@ -34,15 +54,27 @@ class DentistRole(Role):
     alias: str = 'dentist'
     title: str = _('Dentist')
 
+    schema: dict = {
+        "fields": {
+            "profession",
+            "work_experience"
+        },
+        "required_fields": {
+            "profession"
+        }
+    }
+
 
 class CustomUser(AbstractUser):
     first_name = models.CharField(_('first name'), max_length=150, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    second_name = models.CharField(_('second name'), max_length=150, blank=True)
+
     email = models.EmailField('Электронная почта', unique=True)
     avatar = models.ImageField(
         upload_to='users/images/',
         default=None,
-        verbose_name="Аватар",
+        verbose_name='Аватар',
     )
     
     class Meta:
@@ -54,6 +86,14 @@ class CustomUser(AbstractUser):
             null=True,
             blank=True,
             related_name='patients')
+
+    phone = models.CharField(_('Телефон'), null=True, max_length=20)
+    birth_date = models.DateField(_('Дата рождения'), null=True, blank=True)
+
+    additional_info = models.JSONField(_('Доп. информация'), default=dict, blank=True)
+
+    dt_add = models.DateTimeField(_('Дата добавления'), auto_now_add=True)
+    dt_upd = models.DateTimeField(_('Дата обновления'), auto_now=True)
 
     role_id = models.PositiveIntegerField(_('Role'), default=ClientRole.id  )
 
