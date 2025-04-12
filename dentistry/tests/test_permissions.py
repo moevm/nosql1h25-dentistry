@@ -1,7 +1,6 @@
 import pytest
-from django.test import RequestFactory
-from rest_framework.test import APIRequestFactory, force_authenticate
-from users.models import CustomUser
+from rest_framework.test import APIRequestFactory
+from backend.users.models import CustomUser
 from backend.dentists.permissions import IsDentist
 
 @pytest.fixture

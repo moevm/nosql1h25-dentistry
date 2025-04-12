@@ -27,9 +27,10 @@ INSTALLED_APPS = [
     'djoser',
     'django_filters',
     # 'urlshortner',
-    'backend.users.apps.UsersConfig',
-    'backend.dentists.apps.DentistsConfig',
-    'backend.clients.apps.ClientsConfig',
+    # 'backend.core',
+    'backend.users',
+    'backend.dentists',
+    'backend.clients',
 ]
 
 MIDDLEWARE = [
@@ -42,7 +43,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'backend.core.urls'
 
 TEMPLATES = [
     {
@@ -60,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
+WSGI_APPLICATION = 'backend.core.wsgi.application'
 
 
 DATABASES = {

@@ -5,9 +5,9 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('clients/', include('backend.clients.urls'), namespace='clients'),
+    path('clients/', include(('backend.clients.urls', 'clients'), namespace='clients')),
     path('dentists/', include(('backend.dentists.urls', 'dentists'), namespace='dentists')),
-    path('', include('backend.users.urls', namespace='users')),
+    # path('', include('backend.users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:

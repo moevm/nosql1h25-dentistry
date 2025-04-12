@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.test import APIRequestFactory
 from rest_framework.response import Response
-from users.models import CustomUser
+from backend.users.models import CustomUser
 from backend.dentists.views import DentistViewSet
 
 @pytest.fixture
@@ -22,10 +22,10 @@ def test_me_action_get(db, dentist_user, api_request_factory):
     request = api_request_factory.get('/dentists/me/')
     request.user = dentist_user
     view.request = request
-    
+
     # Мокаем метод me
     view.me = lambda r: Response({'email': r.user.email})
-    
+
     response = view.me(request)
     assert isinstance(response, Response)
     assert response.status_code == 200
