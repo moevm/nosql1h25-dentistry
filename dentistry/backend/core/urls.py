@@ -5,6 +5,8 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('dentists/', include('backend.dentists.urls')),
+    path('clients/', include('backend.patients.urls')),
     path('', include('backend.users.urls', namespace='users')),
 ]
 
