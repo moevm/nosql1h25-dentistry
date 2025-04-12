@@ -1,19 +1,16 @@
-from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from users.models import CustomUser
+from users.models import CustomUser, ClientRole, DentistRole
 from users.serializers import CustomUserSerializer
 
-class PatientViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.filter(role_id=2)  # роль "пациент"
+class ClientViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.filter(role_id=ClientRole.id)
     serializer_class = CustomUserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
-        if self.action in ['me', 'my_dentist']:
+        if self.action in ['me', 'dentists']:
             return [permissions.IsAuthenticated()]
         return super().get_permissions()
 
@@ -30,7 +27,7 @@ class PatientViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
 
     @action(detail=False, methods=['GET'])
-    def my_dentist(self, request):
-        dentist = request.user.assigned_dentist
-        serializer = CustomUserSerializer(dentist)
+    def dentists(self, request):
+        dentists = CustomUser.objects.filter(role_id=DentistRole.id)
+        serializer = CustomUserSerializer(dentists, many=True)
         return Response(serializer.data)
