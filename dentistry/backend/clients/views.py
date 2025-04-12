@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from users.models import CustomUser, ClientRole, DentistRole
-from users.serializers import CustomUserSerializer
+from ..users.models import CustomUser, ClientRole, DentistRole
+from ..users.serializers import CustomUserSerializer
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.filter(role_id=ClientRole.id)

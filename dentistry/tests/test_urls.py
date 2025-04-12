@@ -1,5 +1,5 @@
 from django.urls import resolve, reverse
-from dentists.views import DentistViewSet
+from backend.dentists.views import DentistViewSet
 
 
 def test_dentist_me_url_resolves():

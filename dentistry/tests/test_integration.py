@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
-from users.models import CustomUser, DentistRole
+from backend.users.models import CustomUser, DentistRole
 
 
 @pytest.fixture
