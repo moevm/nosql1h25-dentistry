@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # 'urlshortner',
     'backend.users.apps.UsersConfig',
     'backend.dentists.apps.DentistsConfig',
+    'backend.clients.apps.ClientsConfig',
 ]
 
 MIDDLEWARE = [

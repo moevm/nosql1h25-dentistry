@@ -95,6 +95,9 @@ class CustomUser(AbstractUser):
     dt_add = models.DateTimeField(_('Дата добавления'), auto_now_add=True)
     dt_upd = models.DateTimeField(_('Дата обновления'), auto_now=True)
 
+    class Meta:
+        app_label = 'users'
+
     role_id = models.PositiveIntegerField(_('Role'), default=ClientRole.id  )
 
     USERNAME_FIELD = 'email'
