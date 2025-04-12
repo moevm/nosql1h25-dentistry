@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django_filters',
     # 'urlshortner',
     'users.apps.UsersConfig',
+    'clients.apps.ClientsConfig',
 ]
 
 MIDDLEWARE = [
