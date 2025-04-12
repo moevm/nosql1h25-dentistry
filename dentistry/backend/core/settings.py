@@ -27,8 +27,9 @@ INSTALLED_APPS = [
     'djoser',
     'django_filters',
     # 'urlshortner',
-    'users.apps.UsersConfig',
-    'clients.apps.ClientsConfig',
+    'backend.users.apps.UsersConfig',
+    'backend.dentists.apps.DentistsConfig',
+    'backend.clients.apps.ClientsConfig',
 ]
 
 MIDDLEWARE = [
