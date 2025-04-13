@@ -8,7 +8,6 @@ from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError
 
 from .paginations import PageLimitPagination
 
@@ -58,6 +57,18 @@ class CustomUserViewSet(UserViewSet):
             return Response(status=204)
         else:
             return Response({"errors": "У вас нет аватара"}, status=400)
+
+    @action(detail=False, methods=['GET', 'PUT', 'PATCH'])
+    def me(self, request):
+        user = request.user
+        if request.method == 'GET':
+            serializer = self.get_serializer(user)
+            return Response(serializer.data)
+        else:
+            serializer = self.get_serializer(user, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
 
     def validate_additional_info(self, additional_info, role_class):
         """Проверка и валидация полей additional_info для пользователя."""
