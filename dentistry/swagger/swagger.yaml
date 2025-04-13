@@ -1,0 +1,491 @@
+openapi: 3.0.0
+info:
+  title: Example API
+  version: 1.0.0
+paths:
+  ## Dentists Block
+  /dentists:
+    get:
+      summary: List all dentists
+      description: Получить список всех стоматологов.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Список стоматологов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomUser'
+    post:
+      summary: Create a new dentist
+      description: Создать нового стоматолога.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '201':
+          description: Успешное создание стоматолога
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+  /dentists/{dentistId}:
+    get:
+      summary: Get dentist by ID
+      description: Получить информацию о стоматологе по ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: dentistId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Информация о стоматологе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    patch:
+      summary: Update dentist by ID
+      description: Обновить информацию о стоматологе по ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: dentistId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '200':
+          description: Информация об обновленном стоматологе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    delete:
+      summary: Delete dentist by ID
+      description: Удалить стоматолога по ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: dentistId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Стоматолог успешно удален
+  /dentists/me:
+    get:
+      summary: Get current dentist information
+      description: Получить информацию о текущем стоматологе.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Информация о текущем стоматологе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    put:
+      summary: Update current dentist information
+      description: Обновить информацию о текущем стоматологе.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '200':
+          description: Обновленная информация о стоматологе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    patch:
+      summary: Partially update current dentist information
+      description: Частично обновить информацию о текущем стоматологе.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '200':
+          description: Частично обновленная информация о стоматологе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+  /dentists/me/avatar:
+    put:
+      summary: Update dentist's avatar
+      description: Обновить аватар текущего стоматолога.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: base64
+                  description: Base64 encoded avatar image
+      responses:
+        '200':
+          description: Информация о стоматологе с обновленным аватаром
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avatar'
+        '400':
+          description: Ошибка, если аватар не предоставлен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                    example: "Аватар не предоставлен"
+    patch:
+      summary: Partially update dentist's avatar
+      description: Частично обновить аватар текущего стоматолога.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: base64
+                  description: Base64 encoded avatar image
+      responses:
+        '200':
+          description: Информация о стоматологе с обновленным аватаром
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avatar'
+        '400':
+          description: Ошибка, если аватар не предоставлен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                    example: "Аватар не предоставлен"
+    delete:
+      summary: Delete dentist's avatar
+      description: Удалить аватар текущего стоматолога.
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Аватар успешно удален
+        '400':
+          description: Ошибка, если аватар отсутствует
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                    example: "У вас нет аватара"
+
+  ## Clients Block
+  /clients:
+    get:
+      summary: List all clients
+      description: Получить список всех клиентов.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Список клиентов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomUser'
+    post:
+      summary: Create a new client
+      description: Создать нового клиента.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '201':
+          description: Успешное создание клиента
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+  /clients/{clientId}:
+    get:
+      summary: Get client by ID
+      description: Получить информацию о клиенте по ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Информация о клиенте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    patch:
+      summary: Update client by ID
+      description: Обновить информацию о клиенте по ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '200':
+          description: Информация об обновленном клиенте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    delete:
+      summary: Delete client by ID
+      description: Удалить клиента по ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: Клиент успешно удален
+  /clients/me:
+    get:
+      summary: Get current client information
+      description: Получить информацию о текущем клиенте.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Информация о текущем клиенте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    put:
+      summary: Update current client information
+      description: Обновить информацию о текущем клиенте.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '200':
+          description: Обновленная информация о клиенте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+    patch:
+      summary: Partially update current client information
+      description: Частично обновить информацию о текущем клиенте.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+      responses:
+        '200':
+          description: Частично обновленная информация о клиенте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+  /clients/me/avatar:
+    put:
+      summary: Update client's avatar
+      description: Обновить аватар текущего клиента.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: base64
+                  description: Base64 encoded avatar image
+      responses:
+        '200':
+          description: Информация о клиенте с обновленным аватаром
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avatar'
+        '400':
+          description: Ошибка, если аватар не предоставлен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                    example: "Аватар не предоставлен"
+    patch:
+      summary: Partially update client's avatar
+      description: Частично обновить аватар текущего клиента.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: base64
+                  description: Base64 encoded avatar image
+      responses:
+        '200':
+          description: Информация о клиенте с обновленным аватаром
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avatar'
+        '400':
+          description: Ошибка, если аватар не предоставлен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                    example: "Аватар не предоставлен"
+    delete:
+      summary: Delete client's avatar
+      description: Удалить аватар текущего клиента.
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Аватар успешно удален
+        '400':
+          description: Ошибка, если аватар отсутствует
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: string
+                    example: "У вас нет аватара"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CustomUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: "johndoe"
+        email:
+          type: string
+          example: "johndoe@example.com"
+        role_id:
+          type: integer
+          example: 2
+    Avatar:
+      type: object
+      properties:
+        avatar_url:
+          type: string
+          format: url
+          example: "http://example.com/avatar.png"

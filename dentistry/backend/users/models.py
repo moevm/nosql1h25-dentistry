@@ -80,13 +80,6 @@ class CustomUser(AbstractUser):
     class Meta:
         app_label = 'users'
 
-    assigned_dentist = models.ForeignKey(
-            'self',
-            on_delete=models.SET_NULL,
-            null=True,
-            blank=True,
-            related_name='clients')
-
     phone = models.CharField(_('Телефон'), null=True, max_length=20)
     birth_date = models.DateField(_('Дата рождения'), null=True, blank=True)
 
