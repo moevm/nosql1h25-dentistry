@@ -626,7 +626,6 @@ paths:
           description: Запись успешно удалена
         '403':
           description: Нет прав на удаление записи
-
 components:
   securitySchemes:
     bearerAuth:
