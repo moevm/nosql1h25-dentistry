@@ -460,6 +460,172 @@ paths:
                   errors:
                     type: string
                     example: "У вас нет аватара"
+  ## Records Block
+  /records/:
+    get:
+      summary: List all records
+      description: Получить список всех записей (доступно админу, стоматологу - только свои, пациенту - только свои)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: dentist
+          in: query
+          description: Фильтр по email стоматолога
+          schema:
+            type: string
+        - name: patient
+          in: query
+          description: Фильтр по email пациента
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Фильтр по статусу (scheduled/completed/canceled)
+          schema:
+            type: string
+        - name: date_from
+          in: query
+          description: Дата от (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: date_to
+          in: query
+          description: Дата до (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Список записей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+    
+    post:
+      summary: Create a new record
+      description: Создать новую запись (доступно стоматологам и админам)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordInput'
+      responses:
+        '201':
+          description: Запись успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+        '400':
+          description: Неверные данные
+        '403':
+          description: Нет прав на создание записи
+
+  /records/{id}/:
+    get:
+      summary: Get record by ID
+      description: Получить запись по ID (доступно админу, стоматологу - только свои, пациенту - только свои)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Информация о записи
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+        '404':
+          description: Запись не найдена
+        '403':
+          description: Нет прав на просмотр этой записи
+    
+    put:
+      summary: Update record by ID
+      description: Обновить запись (доступно стоматологам и админам)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordInput'
+      responses:
+        '200':
+          description: Запись успешно обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+        '400':
+          description: Неверные данные
+        '403':
+          description: Нет прав на обновление записи
+    
+    patch:
+      summary: Partially update record by ID
+      description: Частично обновить запись (доступно стоматологам и админам)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordInput'
+      responses:
+        '200':
+          description: Запись успешно обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+        '400':
+          description: Неверные данные
+        '403':
+          description: Нет прав на обновление записи
+    
+    delete:
+      summary: Delete record by ID
+      description: Удалить запись (доступно стоматологам и админам)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Запись успешно удалена
+        '403':
+          description: Нет прав на удаление записи
 components:
   securitySchemes:
     bearerAuth:
@@ -489,3 +655,63 @@ components:
           type: string
           format: url
           example: "http://example.com/avatar.png"
+    Record:
+      type: object
+      properties:
+        id:
+          type: integer
+        dentist:
+          $ref: '#/components/schemas/CustomUser'
+        patient:
+          $ref: '#/components/schemas/CustomUser'
+        status:
+          type: string
+          enum: [scheduled, completed, canceled]
+        appointment_date:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          description: Длительность приема в минутах
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        actual_date:
+          type: string
+          format: date-time
+          nullable: true
+    
+    RecordInput:
+      type: object
+      properties:
+        dentist:
+          type: string
+          format: email
+          description: Email стоматолога (обязательно для админа)
+        patient:
+          type: string
+          format: email
+          description: Email пациента (необязательно, для пациентов устанавливается автоматически)
+        status:
+          type: string
+          enum: [scheduled, completed, canceled]
+        appointment_date:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          description: Длительность приема в минутах
+          default: 30
+        notes:
+          type: string
+        actual_date:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - appointment_date
