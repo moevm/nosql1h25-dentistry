@@ -5,10 +5,11 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('clients/', include(('backend.clients.urls', 'clients'), namespace='clients')),
-    path('dentists/', include(('backend.dentists.urls', 'dentists'), namespace='dentists')),
-    path('api/', include(('backend.records.urls', 'backend.records'), namespace='records')),
-    # path('', include('backend.users.urls', namespace='users')),
+    path('api/', include([
+        path('clients/', include(('backend.clients.urls', 'clients'), namespace='clients')),
+        path('dentists/', include(('backend.dentists.urls', 'dentists'), namespace='dentists')),
+        path('records/', include(('backend.records.urls', 'records'), namespace='records')),
+    ])),
 ]
 
 if settings.DEBUG:

@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'backend.dentists',
     'backend.clients',
     'backend.records',
-
 ]
 
 MIDDLEWARE = [
