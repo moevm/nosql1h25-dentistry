@@ -1,0 +1,12 @@
+.button {
+  background-color: var(--action-color);
+  color: var(--action-text-color);
+  border-radius: 10px;
+  padding: 0.625em 1.0833em;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.375em;
+}
