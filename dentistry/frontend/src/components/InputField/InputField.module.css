@@ -1,0 +1,29 @@
+.input {
+  min-height: 2.5rem;
+  border-radius: 8px;
+  background-color: var(--second-action-color);
+  padding: 0.1875rem 1rem 0.5rem;
+}
+
+.input_label {
+  display: block;
+  font-family: "Lora", serif;
+  color: var(--input-color);
+  opacity: 0.6;
+  font-size: 0.625rem;
+  line-height: 0.8125rem;
+}
+
+.input_input {
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  margin: 0;
+  padding: 0;
+  color: var(--input-color);
+  outline: none;
+  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+}
