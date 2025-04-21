@@ -7,6 +7,8 @@ import ChangePasswordPage from "./pages/ChangePasswordPage";
 import RecordsPage from "./pages/user/RecordsPage";
 import SpecialistRecordsPage from "./pages/specialist/SpecialistRecordsPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import AddRecordPage from "./pages/AddRecordPage";
+import ProfilePage from "./pages/ProfilePage";
 
 // Import the layout components
 import PatientLayout from "./components/pageLayouts/PatientLayout";
@@ -16,7 +18,6 @@ import SpecialistLayout from "./components/pageLayouts/SpecialistLayout";
 import AuthShell from "./components/AuthShell";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UniversalLayout from "./components/pageLayouts/UniversalLayout";
-import AddRecordPage from "./pages/AddRecordPage";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
           {
             path: "add_record",
             element: <AddRecordPage />,
+          },
+          {
+            path: "profile",
+            element: <ProfilePage />,
           },
         ],
       },
