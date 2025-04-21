@@ -5,18 +5,26 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
 
+// Import the outlet component
+import AuthShell from "./components/AuthShell";
+
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <div>Hello World</div>,
   },
   {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
+    element: <AuthShell />,
+    children: [
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+    ],
   },
   {
     path: "/forgot-password",

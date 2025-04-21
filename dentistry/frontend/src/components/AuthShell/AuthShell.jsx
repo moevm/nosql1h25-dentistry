@@ -1,10 +1,11 @@
+import { Outlet } from "react-router-dom";
 import AuthNavLinks from "../AuthNavLinks";
 import BaseShell from "../BaseShell";
 
-const AuthShell = ({ children }) => (
+const AuthShell = () => (
   <BaseShell>
     <AuthNavLinks />
-    {children}
+    <Outlet />
   </BaseShell>
 );
 

@@ -1,10 +1,9 @@
-import AuthShell from "../../components/AuthShell";
 import InputField from "../../components/InputField";
 import AuthButton from "../../components/AuthButton";
 import styles from "./RegisterPage.module.css";
 
 const RegisterPage = () => (
-  <AuthShell>
+  <>
     <form action="#" className={styles.form}>
       <div className={styles.fields}>
         <InputField
@@ -40,6 +39,6 @@ const RegisterPage = () => (
       </div>
       <AuthButton type={"submit"}>Регистрация </AuthButton>
     </form>
-  </AuthShell>
+  </>
 );
 export default RegisterPage;
