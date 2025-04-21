@@ -2,11 +2,12 @@ import styles from "./SpecialistRecordsPage.module.css";
 import RecordCard from "../../../components/RecordCard";
 import FilterInputField from "../../../components/FilterInputField";
 import Button from "../../../components/Button";
+import { Link } from "react-router-dom";
 
 const SpecialistRecordsPage = () => (
   <>
       <h2 className={styles.title}>Записи</h2>
-      <button className={styles.big_button}>Записаться на прием</button>
+      <Link to="/add_record" className={styles.big_button}>Записать пациента</Link>
       <div className={styles.filters}>
         <FilterInputField
           label={"Диапозон с"}

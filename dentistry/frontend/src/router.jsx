@@ -7,14 +7,17 @@ import ChangePasswordPage from "./pages/ChangePasswordPage";
 import RecordsPage from "./pages/user/RecordsPage";
 import SpecialistRecordsPage from "./pages/specialist/SpecialistRecordsPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import AddRecordPage from "./pages/AddRecordPage";
+import ProfilePage from "./pages/ProfilePage";
 
 // Import the layout components
-import PatientPageWrapper from "./components/pageLayouts/PatientPageLayout";
-import SpecialistPageWrapper from "./components/pageLayouts/SpecialistPageLayout";
+import PatientLayout from "./components/pageLayouts/PatientLayout";
+import SpecialistLayout from "./components/pageLayouts/SpecialistLayout";
 
 // Import the outlet component
 import AuthShell from "./components/AuthShell";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UniversalLayout from "./components/pageLayouts/UniversalLayout";
 
 export const router = createBrowserRouter([
   {
@@ -47,7 +50,7 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute allowedRoles={["patient"]} />,
     children: [
       {
-        element: <PatientPageWrapper />,
+        element: <PatientLayout />,
         children: [
           {
             path: "/records",
@@ -62,11 +65,39 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute allowedRoles={["specialist", "admin"]} />,
     children: [
       {
-        element: <SpecialistPageWrapper />,
+        element: <SpecialistLayout />,
         children: [
           {
             path: "/specialist/records",
             element: <SpecialistRecordsPage />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    element: (
+      <ProtectedRoute allowedRoles={["patient", "specialist", "admin"]} />
+    ),
+    children: [
+      {
+        element: (
+          <UniversalLayout
+            layouts={{
+              patient: PatientLayout,
+              specialist: SpecialistLayout,
+              admin: SpecialistLayout,
+            }}
+          />
+        ),
+        children: [
+          {
+            path: "add_record",
+            element: <AddRecordPage />,
+          },
+          {
+            path: "profile",
+            element: <ProfilePage />,
           },
         ],
       },
