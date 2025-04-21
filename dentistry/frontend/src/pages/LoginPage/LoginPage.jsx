@@ -33,9 +33,9 @@ const LoginPage = () => (
       </div>
       <AuthButton type={"submit"}>Войти</AuthButton>
     </form>
-    <div className={styles.forgot_password}>
-      <Link to="/forgot-password">Забыли пароль?</Link>
-    </div>
+    <Link to="/forgot-password" className={styles.forgot_password}>
+      Забыли пароль?
+    </Link>
   </AuthShell>
 );
 
