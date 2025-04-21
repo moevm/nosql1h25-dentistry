@@ -5,6 +5,8 @@
   --frame-background-color: #fff;
   --action-color: #985ace;
   --second-action-color: #f8f1ff;
+  --third-action-color: #8c5abf;
+  --action-text-color: #fff;
 
   --input-color: #403a4b;
   --input-background-color: var(--second-action-color);

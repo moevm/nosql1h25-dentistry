@@ -1,0 +1,43 @@
+
+
+.big_button {
+  background-color: var(--action-color);
+  color: var(--action-text-color);
+  border-radius: 10px;
+  padding: 0.625rem 1.625rem;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 1.5rem;
+  line-height: 2.0625rem;
+}
+
+.title {
+  font-size: 3.125rem;
+  line-height: 1.36;
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.filters {
+  height: 40px;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: baseline;
+  display: flex;
+  gap: 16px;
+}
+
+.filter_button {
+  width: fit-content;
+}
+
+.card_container {
+  display: grid;
+  gap: 10px 50px;
+  grid-template-columns: repeat(auto-fill, 208px);
+  justify-content: space-evenly;
+  padding: 10px 0;
+}
