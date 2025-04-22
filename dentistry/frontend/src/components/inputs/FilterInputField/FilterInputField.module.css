@@ -1,0 +1,28 @@
+.input {
+  display: flex;
+  align-items: baseline;
+    gap: 4px;
+}
+
+.input_label {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: fit-content;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 1rem;
+  line-height: 1.375rem;
+}
+
+.input_input {
+  height: 2.5rem;
+  background-color: var(--frame-background-color);
+  border: 1px solid rgba(0, 0, 0, 20);
+  padding: 10px;
+  border-radius: 10px;
+
+  margin: 0;
+  outline: none;
+  font-weight: 300;
+  font-family: "Noto Sans", sans-serif;
+}

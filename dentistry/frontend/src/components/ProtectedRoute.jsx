@@ -3,8 +3,6 @@ import { useUser } from "../context/UserContext";
 
 const ProtectedRoute = ({ allowedRoles }) => {
   const { user } = useUser();
-  console.log(user);
-  console.log(allowedRoles);
 
   if (!user) {
     return <Navigate to="/login" replace />;

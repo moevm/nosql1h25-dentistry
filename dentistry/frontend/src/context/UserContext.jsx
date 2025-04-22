@@ -4,7 +4,7 @@ const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false); // 👈 новое
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -14,12 +14,12 @@ export const UserProvider = ({ children }) => {
     setIsLoaded(true);
   }, []);
 
-  const login = (userData) => {
+  const saveUser = (userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
 
-  const logout = () => {
+  const removeUser = () => {
     setUser(null);
     localStorage.removeItem("user");
   };
@@ -28,7 +28,7 @@ export const UserProvider = ({ children }) => {
   if (!isLoaded) return null;
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, saveUser, removeUser }}>
       {children}
     </UserContext.Provider>
   );

@@ -4,11 +4,15 @@ import { createBrowserRouter } from "react-router-dom";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
-import RecordsPage from "./pages/user/RecordsPage";
-import SpecialistRecordsPage from "./pages/specialist/SpecialistRecordsPage";
+import RecordsPage from "./pages/RecordsPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import AddRecordPage from "./pages/AddRecordPage";
 import ProfilePage from "./pages/ProfilePage";
+import MainPage from "./pages/MainPage";
+import SpecialistsPage from "./pages/SpecialistsPage";
+import PatientsPage from "./pages/PatientsPage";
+import AddPatientPage from "./pages/admin/AddPatientPage";
+import AddSpecialistPage from "./pages/admin/AddSpecialistPage";
 
 // Import the layout components
 import PatientLayout from "./components/pageLayouts/PatientLayout";
@@ -20,10 +24,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import UniversalLayout from "./components/pageLayouts/UniversalLayout";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <div>Hello World</div>,
-  },
   {
     element: <AuthShell />,
     children: [
@@ -51,10 +51,24 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <PatientLayout />,
+        children: [],
+      },
+    ],
+  },
+
+  {
+    element: <ProtectedRoute allowedRoles={["admin"]} />,
+    children: [
+      {
+        element: <SpecialistLayout />,
         children: [
           {
-            path: "/records",
-            element: <RecordsPage />,
+            path: "/add-patient",
+            element: <AddPatientPage />,
+          },
+          {
+            path: "/add-specialist",
+            element: <AddSpecialistPage />,
           },
         ],
       },
@@ -68,8 +82,12 @@ export const router = createBrowserRouter([
         element: <SpecialistLayout />,
         children: [
           {
-            path: "/specialist/records",
-            element: <SpecialistRecordsPage />,
+            path: "patients",
+            element: <PatientsPage />,
+          },
+          {
+            path: "patients/:id",
+            element: <ProfilePage userRole={"patient"} />,
           },
         ],
       },
@@ -81,6 +99,10 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
+        element: <MainPage></MainPage>,
+        path: "/",
+      },
+      {
         element: (
           <UniversalLayout
             layouts={{
@@ -91,6 +113,8 @@ export const router = createBrowserRouter([
           />
         ),
         children: [
+          { path: "records", element: <RecordsPage /> },
+
           {
             path: "add_record",
             element: <AddRecordPage />,
@@ -98,6 +122,14 @@ export const router = createBrowserRouter([
           {
             path: "profile",
             element: <ProfilePage />,
+          },
+          {
+            path: "specialists",
+            element: <SpecialistsPage />,
+          },
+          {
+            path: "specialists/:id",
+            element: <ProfilePage userRole={"specialist"} />,
           },
         ],
       },

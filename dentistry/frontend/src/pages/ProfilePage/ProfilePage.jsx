@@ -1,16 +1,35 @@
+import { useParams } from "react-router-dom";
 import Button from "../../components/Button";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useCurrentUser, useUserById } from "../../hooks/apiHooks";
 import styles from "./ProfilePage.module.css";
+import OnlyRole from "../../components/OnlyRole";
 
-const ProfilePage = () => {
-  const { data: user, loading, error } = useCurrentUser();
+const titles = {
+  user: "Профиль",
+  specialist: "Врач",
+  admin: "Администратор",
+  patient: "Пациент",
+};
+
+const ProfilePage = ({ userRole }) => {
+  const { id } = useParams();
+  const userId = id ? parseInt(id) : undefined;
+  const {
+    data: user,
+    loading,
+    error,
+  } = userId ? useUserById({ id: userId, role: userRole }) : useCurrentUser();
+  const isMyProfile = userId === undefined;
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.title}>Профиль</h2>
+      <h2 className={styles.title}>
+        {isMyProfile ? titles["user"] : titles[user.role]}
+      </h2>
       <div className={styles.content}>
         <div className={styles.avatar}>
           <img src={user.avatar} alt="Avatar" />
@@ -45,10 +64,15 @@ const ProfilePage = () => {
               </div>
             </div>
           </div>
-          <div className={styles.actions}>
-            <Button>Редактировать</Button>
-            <Button>Сменить пароль</Button>
-          </div>
+          {isMyProfile && (
+            <div className={styles.actions}>
+              <Button>Редактировать</Button>
+              <Button>Сменить пароль</Button>
+            </div>
+          )}
+          <OnlyRole role={["admin", "specialist"]}>
+            <Button>Медицинская карточка</Button>
+          </OnlyRole>
         </div>
       </div>
     </div>

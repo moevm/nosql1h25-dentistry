@@ -11,6 +11,7 @@ const mockDentists = [
     patronymic: "Иванович",
     email: "ivan@example.com",
     role: "specialist",
+    position: "Старший стоматолог",
     avatar: base64Placeholder,
   },
   {
@@ -39,11 +40,13 @@ const mockClients = [
   },
 ];
 
+const mockServices = [{ id: 2, name: "Лечение кариеса" }];
 const mockRecords = [
   {
-    id: 1,
+    id: 100,
     dentist: mockDentists[0],
     patient: mockClients[0],
+    service: mockServices[0],
     status: "scheduled",
     appointment_date: new Date().toISOString(),
     duration: 30,
@@ -67,6 +70,29 @@ const mockApiService = {
     return { data: newDentist };
   },
 
+  createDentistBulk: async (data) => {
+    await delay(300);
+    const file = data.get("file");
+    const text = await file.text();
+    const parsedData = text
+      .split("\n")
+      .map((line) => line.split(","))
+      .map(([name, surname, patronymic, email, phone, position, avatar]) => ({
+        name,
+        surname,
+        patronymic,
+        email,
+        phone,
+        role: "specialist",
+        position,
+        avatar,
+      }));
+    parsedData.forEach((dentist) => {
+      dentist.id = Date.now();
+      mockDentists.push(dentist);
+    });
+  },
+
   getDentistById: async (id) => {
     await delay(300);
     return { data: mockDentists.find((d) => d.id === id) };
@@ -86,6 +112,11 @@ const mockApiService = {
     return { data: null };
   },
 
+  getClients: async (filters) => {
+    await delay(300);
+    return { data: mockClients };
+  },
+
   getCurrentDentist: async () => {
     await delay(300);
     return { data: mockDentists[0] };
@@ -96,7 +127,14 @@ const mockApiService = {
     return { data: mockClients[0] };
   },
 
-  getRecords: async () => {
+  getClientById: async (id) => {
+    await delay(300);
+    const client = mockClients.find((c) => c.id === id);
+    if (!client) throw new Error("Client not found");
+    return { data: client };
+  },
+
+  getRecords: async (filters) => {
     await delay(300);
     return { data: mockRecords };
   },
@@ -118,6 +156,32 @@ const mockApiService = {
     };
     mockRecords.push(newRecord);
     return { data: newRecord };
+  },
+
+  patchRecordById: async (id, data) => {
+    await delay(300);
+    const index = mockRecords.findIndex((r) => r.id === id);
+    if (index !== -1) {
+      mockRecords[index] = { ...mockRecords[index], ...data };
+      console.log("mockRecords[index]", mockRecords[index]);
+      return { data: mockRecords[index] };
+    }
+    throw new Error("Record not found");
+  },
+
+  deleteRecordById: async (id) => {
+    await delay(300);
+    const index = mockRecords.findIndex((r) => r.id === id);
+    if (index !== -1) {
+      mockRecords.splice(index, 1);
+      return { data: null };
+    }
+    throw new Error("Record not found");
+  },
+
+  getServiceById: async (id) => {
+    await delay(300);
+    return { data: mockServices.find((s) => s.id === id) };
   },
 };
 
