@@ -1,0 +1,64 @@
+.wrapper {
+  max-width: 1240px;
+}
+
+.title {
+  font-size: 3.125rem;
+  line-height: 1.36;
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.frame {
+  display: flex;
+  gap: 40px;
+  padding: 10px 0;
+}
+
+@media screen and (max-width: 700px) {
+  .frame {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.image {
+  width: 400px;
+  height: 400px;
+  border-radius: 10px;
+  background-color: lightgray;
+}
+
+@media screen and (max-width: 900px) {
+  .image {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field_container {
+  padding-right: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 322px;
+}
+
+.button_container {
+  width: fit-content;
+  align-self: flex-end;
+}
