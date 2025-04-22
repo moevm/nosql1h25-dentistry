@@ -1,9 +1,16 @@
 import styles from "./Button.module.css";
+import clsx from "clsx";
 
-const AuthButton = ({ children, type = "submit", onClick, disabled }) => (
+const AuthButton = ({
+  children,
+  type = "submit",
+  onClick,
+  disabled,
+  className,
+}) => (
   <button
     type={type}
-    className={styles.button}
+    className={clsx(styles.button, className)}
     onClick={onClick}
     disabled={disabled}
   >

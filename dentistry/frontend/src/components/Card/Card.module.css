@@ -1,6 +1,6 @@
 .card {
   width: 208px;
-  height: 305px;
+  min-height: 305px;
   background-color: var(--frame-background-color);
   border-radius: 10px;
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.5);
@@ -41,13 +41,15 @@
   line-height: 1.333;
   font-family: "Noto Sans", sans-serif;
   color: var(--font-color);
+  margin-top: auto;
 }
 
 .button {
   background-color: var(--action-color);
   color: var(--action-text-color);
   border-radius: 10px;
-  padding: 0.5625em 0.5625em;
+  padding: 0.5625em 0.3125em;
+  text-align: center;
   border: none;
   cursor: pointer;
   width: 100%;

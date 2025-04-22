@@ -1,5 +1,5 @@
 import BaseShell from "../../components/BaseShell";
-import InputField from "../../components/InputField";
+import InputField from "../../components/inputs/InputField";
 import AuthButton from "../../components/AuthButton";
 import styles from "./ChangePasswordPage.module.css";
 
