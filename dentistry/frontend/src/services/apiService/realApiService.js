@@ -5,7 +5,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://your-api.com",
+  baseURL: "http://127.0.0.1:8000/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -130,7 +130,5 @@ const apiService = {
   /** @returns {Promise<import("axios").AxiosResponse<void>>} */
   deleteRecordById: (id) => api.delete(`/records/${id}/`),
 };
-
-const data = await apiService.getDentists();
 
 export default apiService;
