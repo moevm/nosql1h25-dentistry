@@ -1,8 +1,48 @@
 version: '3.8'
 
 services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - ALLOWED_HOSTS=localhost,127.0.0.1,172.21.0.4
+      - MONGODB_HOST=mongodb
+      - PYTHONPATH=/app
+      - DJANGO_SETTINGS_MODULE=core.settings
+    depends_on:
+      - mongodb
+    volumes:
+      - ../backend:/app
+      - backend_media:/app/media
+      - backend_static:/app/static
 
   frontend:
-    container_name: front
+    container_name: frontend
     build:
       context: ../frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:
+  backend_media:
+  backend_static:

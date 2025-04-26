@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'django_filters',
+    'corsheaders', 
     # 'urlshortner',
     # 'backend.core',
     'backend.users',
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -142,3 +144,10 @@ DJOSER = {
         'user_list': ('rest_framework.permissions.AllowAny',)
     }
 }
+
+# --- CORS настройки ---
+CORS_ALLOW_ALL_ORIGINS = True  
+# CORS_ALLOWED_ORIGINS = [      todo: включить в проде
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173",
+# ]
