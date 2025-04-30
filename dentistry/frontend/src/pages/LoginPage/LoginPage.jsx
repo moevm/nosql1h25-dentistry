@@ -13,20 +13,31 @@ const LoginPage = () => {
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
 
-  const { login, loading, error, success } = useLogin();
+  const { login, loading, error, success, authToken, user } = useLogin(); // Ваш хук для логина
 
   useEffect(() => {
-    if (success) {
-      // Redirect to the main page or show a success message
+    if (success && authToken && user) {
+      console.log("Login successful", { authToken, user }); // Логируем успешный логин
+      // Сохраняем данные в localStorage, если они есть
+      if (remember) {
+        localStorage.setItem("authToken", authToken);
+        localStorage.setItem("user", JSON.stringify(user)); // Сохраняем пользователя в localStorage
+      }
+      // Редирект на главную страницу после успешного логина
       navigate("/");
-      console.log("Login successful");
+    } else if (error) {
+      console.error("Login failed", error); // Логируем ошибку
     }
-  }, [success]);
+  }, [success, authToken, user, remember, error, navigate]);
 
   const handleSubmit = async (e) => {
-    if (loading) return;
     e.preventDefault();
-    login(formData);
+    if (loading) {
+      console.log("Loading..."); // Логируем, если идет загрузка
+      return;
+    }
+    console.log("Logging in with", formData); // Логируем данные, которые отправляются на сервер
+    login(formData); // вызываем метод логина
   };
 
   return (

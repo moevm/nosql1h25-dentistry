@@ -10,7 +10,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     surname: "",
     email: "",
     password: "",
@@ -35,7 +35,7 @@ const RegisterPage = () => {
     }
 
     const payload = {
-      name: formData.name,
+      username: formData.username,
       surname: formData.surname,
       email: formData.email,
       password: formData.password,
@@ -51,10 +51,10 @@ const RegisterPage = () => {
           <InputField
             label="Имя"
             type="text"
-            name="name"
+            name="username"
             placeholder="введите имя"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formData.username}
+            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
           />
           <InputField
             label="Фамилия"

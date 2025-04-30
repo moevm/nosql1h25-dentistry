@@ -12,16 +12,16 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("authToken");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Token ${token}`;
   }
   return config;
 });
 
 const apiService = {
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser[]>>} */
-  getDentists: () => api.get("/dentists"),
+  getDentists: () => api.get("/dentists/"),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
