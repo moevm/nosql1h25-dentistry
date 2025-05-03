@@ -7,11 +7,18 @@ export const UserProvider = ({ children }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    const storedUser = localStorage.getItem("user");
+
+    // Проверка на null или undefined перед парсингом
+    if (storedUser && storedUser !== "undefined") {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser); // Устанавливаем пользователя, если парсинг успешен
+      } catch (error) {
+        console.error("Ошибка при парсинге данных пользователя:", error);
+      }
     }
-    setIsLoaded(true);
+    setIsLoaded(true); // Устанавливаем флаг загрузки после выполнения
   }, []);
 
   const saveUser = (userData) => {
@@ -24,7 +31,7 @@ export const UserProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  // пока не загрузились данные — не рендерим приложение
+  // Пока не загрузились данные, не рендерим приложение
   if (!isLoaded) return null;
 
   return (
