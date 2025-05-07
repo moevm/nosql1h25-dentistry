@@ -5,4 +5,13 @@ services:
     build:
       dockerfile: Dockerfile.prod
     ports:
-      - "127.0.0.1:5173:80"
+      - "80:80"
+    networks:
+      - app-network
+  
+  backend:
+    environment:
+      - DEBUG=False
+      - ALLOWED_HOSTS=yourdomain.com,backend
+    networks:
+      - app-network

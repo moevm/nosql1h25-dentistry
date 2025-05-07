@@ -8,6 +8,9 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    restart: unless-stopped
+    networks:
+      - app-network
 
   backend:
     build:
@@ -18,16 +21,20 @@ services:
       - "8000:8000"
     environment:
       - DEBUG=True
-      - ALLOWED_HOSTS=localhost,127.0.0.1,172.21.0.4
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0,backend
+      - SECRET_KEY=your-secret-key-here
       - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
       - PYTHONPATH=/app
       - DJANGO_SETTINGS_MODULE=core.settings
-    depends_on:
-      - mongodb
     volumes:
-      - ../backend:/app
       - backend_media:/app/media
       - backend_static:/app/static
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - app-network
 
   frontend:
     container_name: frontend
@@ -39,10 +46,21 @@ services:
     volumes:
       - ../frontend:/app
       - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://backend:8000
     depends_on:
       - backend
+    restart: unless-stopped
+    networks:
+      - app-network
 
 volumes:
   mongodb_data:
   backend_media:
   backend_static:
+
+
+networks:
+  app-network:
+    driver: bridge

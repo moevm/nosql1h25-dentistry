@@ -9,6 +9,8 @@ urlpatterns = [
         path('clients/', include(('backend.clients.urls', 'clients'), namespace='clients')),
         path('dentists/', include(('backend.dentists.urls', 'dentists'), namespace='dentists')),
         path('records/', include(('backend.records.urls', 'records'), namespace='records')),
+        path('auth/', include('djoser.urls')),
+        path('auth/', include('djoser.urls.authtoken')),
     ])),
 ]
 

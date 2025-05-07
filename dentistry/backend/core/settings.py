@@ -13,7 +13,7 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'backend.users.CustomUser'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,25 +26,31 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'django_filters',
-    'corsheaders', 
     # 'urlshortner',
     # 'backend.core',
-    'backend.users',
-    'backend.dentists',
-    'backend.clients',
-    'backend.records',
+    'backend.users.apps.UsersConfig',
+    'backend.dentists.apps.DentistsConfig',
+    'backend.clients.apps.ClientsConfig',
+    'backend.records.apps.RecordsConfig',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'backend.core.urls'
 
@@ -70,9 +76,10 @@ WSGI_APPLICATION = 'backend.core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'my_database',  # Название вашей базы данных
+        'NAME': 'my_database',
         'CLIENT': {
-            'host': 'mongodb://localhost:27017/',  # Адрес MongoDB
+            'host': 'mongodb://mongodb:27017/',  # Используем имя сервиса из docker-compose
+            'authSource': 'admin'
         },
     }
 }
@@ -136,18 +143,11 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
     'SERIALIZERS': {
-        'user': 'backend.users.serializers.CustomUserSerializer',
-        'current_user': 'backend.users.serializers.CustomUserSerializer',
+        'user': 'users.serializers.CustomUserSerializer',
+        'current_user': 'users.serializers.CustomUserSerializer',
     },
     'PERMISSIONS': {
         'user': ('rest_framework.permissions.IsAuthenticated',),
         'user_list': ('rest_framework.permissions.AllowAny',)
     }
 }
-
-# --- CORS настройки ---
-CORS_ALLOW_ALL_ORIGINS = True  
-# CORS_ALLOWED_ORIGINS = [      todo: включить в проде
-#     "http://localhost:5173",
-#     "http://127.0.0.1:5173",
-# ]
