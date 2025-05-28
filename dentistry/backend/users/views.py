@@ -4,7 +4,7 @@ import os
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from djoser.views import UserViewSet
-from rest_framework import permissions
+from rest_framework import permissions, serializers
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from .paginations import PageLimitPagination
 
 from .serializers import AvatarSerializer
+from .models import get_role_by_id
 
 User = get_user_model()
 
@@ -77,6 +78,7 @@ class CustomUserViewSet(UserViewSet):
         allowed_fields = schema.get("fields", set())
         required_fields = schema.get("required_fields", set())
 
+
         # Если дополнительная информация передана
         if additional_info:
             info_keys = set(additional_info.keys())
@@ -91,6 +93,7 @@ class CustomUserViewSet(UserViewSet):
             # Проверка на отсутствие обязательных полей
             missing_fields = required_fields - info_keys
             if missing_fields:
+                print(missing_fields)
                 return Response({
                     "additional_info": f"Обязательные поля отсутствуют: {', '.join(missing_fields)}"
                 }, status=400)
@@ -98,18 +101,18 @@ class CustomUserViewSet(UserViewSet):
         return additional_info
 
     def perform_update(self, serializer):
-        user = self.request.user
+        user = self.get_object()
         data = serializer.validated_data
+        instance = self.get_object()
+        # if not self.request.user.is_support and 'role_id' in data:
+        #     return Response({"errors": "У вас нет прав"}, status=403)
 
-        if not self.request.user.is_support and 'role_id' in data:
-            return Response({"errors": "У вас нет прав"}, status=403)
-
-        role_class = user.current_role()
+        role_class = get_role_by_id(data.get('role_id'))
 
         additional_info = data.get('additional_info', {})
         validation_response = self.validate_additional_info(additional_info, role_class)
-
         if isinstance(validation_response, Response):
-            return validation_response
+            raise serializers.ValidationError(validation_response.data)
+
 
         super().perform_update(serializer)

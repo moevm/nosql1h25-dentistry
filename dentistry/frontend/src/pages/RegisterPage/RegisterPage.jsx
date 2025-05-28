@@ -10,8 +10,9 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
     username: "",
-    surname: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -35,8 +36,9 @@ const RegisterPage = () => {
     }
 
     const payload = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
       username: formData.username,
-      surname: formData.surname,
       email: formData.email,
       password: formData.password,
     };
@@ -51,19 +53,29 @@ const RegisterPage = () => {
           <InputField
             label="Имя"
             type="text"
-            name="username"
+            name="first_name"
             placeholder="введите имя"
-            value={formData.username}
-            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            value={formData.first_name}
+            onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
           />
           <InputField
             label="Фамилия"
             type="text"
-            name="surname"
+            name="last_name"
             placeholder="введите фамилию"
-            value={formData.surname}
+            value={formData.last_name}
             onChange={(e) =>
-              setFormData({ ...formData, surname: e.target.value })
+              setFormData({ ...formData, last_name: e.target.value })
+            }
+          />
+          <InputField
+            label="Имя пользователя"
+            type="text"
+            name="username"
+            placeholder="введите имя пользователя"
+            value={formData.username}
+            onChange={(e) =>
+              setFormData({ ...formData, username: e.target.value })
             }
           />
           <InputField
@@ -99,6 +111,7 @@ const RegisterPage = () => {
         </div>
         <AuthButton type={"submit"}>Регистрация </AuthButton>
       </form>
+      {error && <div className={styles.error}>{error}</div>}
     </>
   );
 };

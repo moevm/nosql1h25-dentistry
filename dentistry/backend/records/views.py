@@ -22,11 +22,11 @@ class RecordViewSet(viewsets.ModelViewSet):
     serializer_class = RecordSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = RecordFilter
-    permission_classes = [permissions.IsAuthenticated, IsDentistOrAdminOrPatientReadOnly]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:  # Админ видит все записи
+        if user.is_staff or not user.is_authenticated:  # Админ видит все записи
             return Record.objects.all().order_by('-appointment_date')
         elif user.role_id == 3:  # Стоматолог видит свои записи
             return Record.objects.filter(dentist=user).order_by('-appointment_date')
@@ -37,25 +37,25 @@ class RecordViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if self.request.user.role_id == 3:  # Если стоматолог
             serializer.save(dentist=self.request.user)
+        elif self.request.user.role_id == 2:  # Если клиент
+            serializer.save(patient=self.request.user)
         elif self.request.user.is_staff:  # Если админ
             # Админ может создать запись для любого стоматолога
             if 'dentist' not in serializer.validated_data:
                 raise PermissionDenied("Admin must specify dentist when creating record")
             serializer.save()
-        else:
-            raise PermissionDenied("Only dentists and admins can create records")
 
-    def perform_update(self, serializer):
-        if self.request.user.role_id == 3 or self.request.user.is_staff:
-            serializer.save()
-        else:
-            raise PermissionDenied("Only dentists and admins can update records")
+    # def perform_update(self, serializer):
+    #     if self.request.user.role_id == 3 or self.request.user.is_staff:
+    #         serializer.save()
+    #     else:
+    #         raise PermissionDenied("Only dentists and admins can update records")
 
-    def perform_destroy(self, instance):
-        if self.request.user.role_id == 3 or self.request.user.is_staff:
-            instance.delete()
-        else:
-            raise PermissionDenied("Only dentists and admins can delete records")
+    # def perform_destroy(self, instance):
+    #     if self.request.user.role_id == 3 or self.request.user.is_staff:
+    #         instance.delete()
+    #     else:
+    #         raise PermissionDenied("Only dentists and admins can delete records")
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

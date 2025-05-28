@@ -7,4 +7,4 @@ from ..users.views import CustomUserViewSet
 class DentistViewSet(CustomUserViewSet):
     queryset = CustomUser.objects.filter(role_id=DentistRole.id)
     serializer_class = CustomUserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]

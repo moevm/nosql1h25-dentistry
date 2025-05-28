@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django')
 
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -49,6 +49,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://frontend:5173",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -74,15 +76,31 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.core.wsgi.application'
 
 
+MONGO_HOST = os.getenv('MONGO_HOST', 'localhost')
+MONGO_PORT = int(os.getenv('MONGO_PORT', '27017'))
+MONGO_NAME = os.getenv('MONGO_NAME', 'dentistry_db')
+MONGO_DB_USER = os.getenv('MONGO_DB_USER')
+MONGO_DB_PASSWORD = os.getenv('MONGO_DB_PASSWORD')
+MONGO_AUTH_SOURCE = os.getenv('MONGO_AUTH_SOURCE', MONGO_NAME)
+
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'my_database',  # Название вашей базы данных
-        'CLIENT': {
-            'host': 'mongodb://localhost:27017/',  # Адрес MongoDB
-        },
+        'NAME': MONGO_NAME,
+        'USER': MONGO_DB_USER,
+        'PASSWORD': MONGO_DB_PASSWORD,
+        'HOST': MONGO_HOST,
+        'PORT': MONGO_PORT,
     }
 }
+
+
+if MONGO_DB_USER:
+    DATABASES['default']['CLIENT']['username'] = MONGO_DB_USER
+    DATABASES['default']['CLIENT']['password'] = MONGO_DB_PASSWORD
+    DATABASES['default']['CLIENT']['authSource'] = MONGO_AUTH_SOURCE
+    # DATABASES['default']['CLIENT']['authMechanism'] = 'SCRAM-SHA-1'
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -135,7 +153,7 @@ REST_FRAMEWORK = {
 
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 1,
+    'PAGE_SIZE': 10,
 }
 
 

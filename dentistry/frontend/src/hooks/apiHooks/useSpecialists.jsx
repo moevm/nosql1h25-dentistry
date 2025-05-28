@@ -12,7 +12,7 @@ export const useSpecialists = (filters = {}) => {
 
     apiService
       .getDentists(filters)
-      .then((res) => setData(res.data))
+      .then((res) => setData(res.data?.results || []))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [JSON.stringify(filters)]);

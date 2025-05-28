@@ -11,3 +11,13 @@
   gap: 9px;
   width: 100%;
 }
+
+.error {
+  color: #ff4444;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ffcdd2;
+  margin-top: 10px;
+  font-size: 14px;
+}
