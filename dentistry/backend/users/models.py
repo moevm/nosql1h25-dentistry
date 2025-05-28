@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from djongo import models as djongo_models
 
 
 class Role:
@@ -63,6 +64,9 @@ class DentistRole(Role):
             "profession"
         }
     }
+
+def get_role_by_id(id):
+    return CustomUser.ROLES.get(id)
 
 
 class CustomUser(AbstractUser):

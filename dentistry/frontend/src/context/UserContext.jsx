@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import authApiService from "../services/authApiService";
 
 const UserContext = createContext(null);
 
@@ -7,18 +8,48 @@ export const UserProvider = ({ children }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const loadUser = async () => {
+      const storedUser = localStorage.getItem("user");
+      const authToken = localStorage.getItem("authToken");
 
-    // Проверка на null или undefined перед парсингом
-    if (storedUser && storedUser !== "undefined") {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser); // Устанавливаем пользователя, если парсинг успешен
-      } catch (error) {
-        console.error("Ошибка при парсинге данных пользователя:", error);
+      // Если есть токен, но нет пользователя или роли
+      if (authToken && (!storedUser || storedUser === "undefined")) {
+        try {
+          const profileResponse = await authApiService.getProfile();
+          const userData = profileResponse.data;
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(userData));
+        } catch (error) {
+          console.error("Ошибка при получении профиля:", error);
+          // Если токен недействителен, очищаем его
+          localStorage.removeItem("authToken");
+        }
+      } else if (storedUser && storedUser !== "undefined") {
+        // Проверка на null или undefined перед парсингом
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          // Если у пользователя нет роли, получим свежий профиль
+          if (authToken && !parsedUser.role) {
+            try {
+              const profileResponse = await authApiService.getProfile();
+              const userData = profileResponse.data;
+              setUser(userData);
+              localStorage.setItem("user", JSON.stringify(userData));
+            } catch (error) {
+              console.error("Ошибка при обновлении профиля:", error);
+              setUser(parsedUser); // Используем старые данные как fallback
+            }
+          } else {
+            setUser(parsedUser); // Устанавливаем пользователя, если парсинг успешен
+          }
+        } catch (error) {
+          console.error("Ошибка при парсинге данных пользователя:", error);
+        }
       }
-    }
-    setIsLoaded(true); // Устанавливаем флаг загрузки после выполнения
+      setIsLoaded(true); // Устанавливаем флаг загрузки после выполнения
+    };
+
+    loadUser();
   }, []);
 
   const saveUser = (userData) => {
@@ -29,6 +60,7 @@ export const UserProvider = ({ children }) => {
   const removeUser = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
   };
 
   // Пока не загрузились данные, не рендерим приложение

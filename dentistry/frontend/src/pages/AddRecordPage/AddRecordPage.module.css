@@ -1,6 +1,36 @@
 .wrapper {
   max-width: 1240px;
 }
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  color: #000;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inputField select {
+  appearance: none; /* Убирает нативные стрелки и стиль */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  color: #000;
+  width: 100%;
+  box-sizing: border-box;
+}
 
 .title {
   font-size: 3.125rem;

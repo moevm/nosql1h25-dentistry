@@ -6,3 +6,33 @@ services:
     container_name: front
     build:
       context: ../frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend
+    build:
+      context: ../  # корень проекта
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - DATABASE_HOST=mongo
+      - DATABASE_PORT=27017
+      - DATABASE_NAME=your_db_name   # добавьте имя вашей БД
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongo
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

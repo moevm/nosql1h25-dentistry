@@ -12,7 +12,7 @@ export const useRecords = (filters = {}) => {
 
     apiService
       .getRecords(filters)
-      .then((res) => setData(res.data))
+      .then((res) => setData(res.data?.results || []))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [JSON.stringify(filters)]);
