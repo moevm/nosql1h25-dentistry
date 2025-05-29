@@ -33,6 +33,19 @@ class Migration(migrations.Migration):
                 ('avatar', models.ImageField(default=None, upload_to='users/images/', verbose_name='Аватар')),
                 ('phone', models.CharField(max_length=20, null=True, verbose_name='Телефон')),
                 ('birth_date', models.DateField(blank=True, null=True, verbose_name='Дата рождения')),
+                ('gender', models.CharField(
+                    max_length=10,
+                    choices=[
+                        ('male', 'Мужской'),
+                        ('female', 'Женский'),
+                        ('other', 'Другой'),
+                        ('unknown', 'Не указан'),
+                    ],
+                    default='unknown',
+                    null=True,
+                    blank=True,
+                    verbose_name='Пол'
+                )),
                 ('additional_info', models.JSONField(blank=True, default=dict, verbose_name='Доп. информация')),
                 ('dt_add', models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')),
                 ('dt_upd', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),

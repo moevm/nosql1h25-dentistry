@@ -25,84 +25,84 @@ const apiService = {
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  createDentist: (data) => api.post("/dentists", data),
+  createDentist: (data) => api.post("/dentists/", data),
 
   /** @param {number} id */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  getDentistById: (id) => api.get(`/dentists/${id}`),
+  getDentistById: (id) => api.get(`/dentists/${id}/`),
 
   /** @param {number} id */
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  updateDentistById: (id, data) => api.patch(`/dentists/${id}`, data),
+  updateDentistById: (id, data) => api.patch(`/dentists/${id}/`, data),
 
   /** @param {number} id */
   /** @returns {Promise<import("axios").AxiosResponse<void>>} */
-  deleteDentistById: (id) => api.delete(`/dentists/${id}`),
+  deleteDentistById: (id) => api.delete(`/dentists/${id}/`),
 
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  getCurrentDentist: () => api.get("/dentists/me"),
+  getCurrentDentist: () => api.get("/dentists/me/"),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  updateCurrentDentist: (data) => api.put("/dentists/me", data),
+  updateCurrentDentist: (data) => api.put("/dentists/me/", data),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  patchCurrentDentist: (data) => api.patch("/dentists/me", data),
+  patchCurrentDentist: (data) => api.patch("/dentists/me/", data),
 
   /** @param {{ avatar: string }} data */
   /** @returns {Promise<import("axios").AxiosResponse<Avatar>>} */
-  updateDentistAvatar: (data) => api.put("/dentists/me/avatar", data),
+  updateDentistAvatar: (data) => api.put("/dentists/me/avatar/", data),
 
   /** @param {{ avatar: string }} data */
   /** @returns {Promise<import("axios").AxiosResponse<Avatar>>} */
-  patchDentistAvatar: (data) => api.patch("/dentists/me/avatar", data),
+  patchDentistAvatar: (data) => api.patch("/dentists/me/avatar/", data),
 
   /** @returns {Promise<import("axios").AxiosResponse<void>>} */
-  deleteDentistAvatar: () => api.delete("/dentists/me/avatar"),
+  deleteDentistAvatar: () => api.delete("/dentists/me/avatar/"),
 
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser[]>>} */
-  getClients: () => api.get("/clients"),
+  getClients: () => api.get("/clients/"),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  createClient: (data) => api.post("/clients", data),
+  createClient: (data) => api.post("/clients/", data),
 
   /** @param {number} id */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  getClientById: (id) => api.get(`/clients/${id}`),
+  getClientById: (id) => api.get(`/clients/${id}/`),
 
   /** @param {number} id */
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  updateClientById: (id, data) => api.patch(`/clients/${id}`, data),
+  updateClientById: (id, data) => api.patch(`/clients/${id}/`, data),
 
   /** @param {number} id */
   /** @returns {Promise<import("axios").AxiosResponse<void>>} */
-  deleteClientById: (id) => api.delete(`/clients/${id}`),
+  deleteClientById: (id) => api.delete(`/clients/${id}/`),
 
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  getCurrentClient: () => api.get("/clients/me"),
+  getCurrentClient: () => api.get("/clients/me/"),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  updateCurrentClient: (data) => api.put("/clients/me", data),
+  updateCurrentClient: (data) => api.put("/clients/me/", data),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
-  patchCurrentClient: (data) => api.patch("/clients/me", data),
+  patchCurrentClient: (data) => api.patch("/clients/me/", data),
 
   /** @param {{ avatar: string }} data */
   /** @returns {Promise<import("axios").AxiosResponse<Avatar>>} */
-  updateClientAvatar: (data) => api.put("/clients/me/avatar", data),
+  updateClientAvatar: (data) => api.put("/clients/me/avatar/", data),
 
   /** @param {{ avatar: string }} data */
   /** @returns {Promise<import("axios").AxiosResponse<Avatar>>} */
-  patchClientAvatar: (data) => api.patch("/clients/me/avatar", data),
+  patchClientAvatar: (data) => api.patch("/clients/me/avatar/", data),
 
   /** @returns {Promise<import("axios").AxiosResponse<void>>} */
-  deleteClientAvatar: () => api.delete("/clients/me/avatar"),
+  deleteClientAvatar: () => api.delete("/clients/me/avatar/"),
 
   /** @param {Object} params */
   /** @returns {Promise<import("axios").AxiosResponse<Record[]>>} */

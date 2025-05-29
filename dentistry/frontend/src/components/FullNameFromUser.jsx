@@ -1,7 +1,7 @@
 const FullNameFromUser = ({ user }) => {
   return (
     <span>
-      {user.surname} {user.name} {user.patronymic}
+      {user.last_name} {user.first_name} {user.second_name}
     </span>
   );
 };

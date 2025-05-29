@@ -5,7 +5,7 @@ services:
   frontend:
     container_name: front
     build:
-      context: ./dentistry/frontend
+      context: ../frontend
     ports:
       - "3000:3000"
     depends_on:
@@ -14,19 +14,19 @@ services:
   backend:
     container_name: backend
     build:
-      context: ./dentistry
+      context: ../  # корень проекта
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - mongo
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings
-      - DATABASE_HOST=db
+      - DATABASE_HOST=mongo
       - DATABASE_PORT=27017
-      - DATABASE_NAME=your_db_name
+      - DATABASE_NAME=your_db_name   # добавьте имя вашей БД
     restart: unless-stopped
 
-  db:
+  mongo:
     container_name: mongo
     image: mongo:6.0
     ports:

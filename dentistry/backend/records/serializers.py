@@ -23,18 +23,18 @@ class RecordSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         # Для пациентов автоматически устанавливаем пациента
-        if request and request.user.role_id == 2:
-            data['patient'] = request.user
-
-        # Для админов проверяем что указан стоматолог
-        elif request and request.user.is_staff and 'dentist' not in data:
-            raise serializers.ValidationError({
-                'dentist': 'Admin must specify dentist when creating record'
-            })
-
-        # Для стоматологов автоматически устанавливаем стоматолога
-        elif request and request.user.role_id == 3:
-            data['dentist'] = request.user
+        # if request and request.user.role_id == 2:
+        #     data['patient'] = request.user
+        #
+        # # Для админов проверяем что указан стоматолог
+        # elif request and request.user.is_staff and 'dentist' not in data:
+        #     raise serializers.ValidationError({
+        #         'dentist': 'Admin must specify dentist when creating record'
+        #     })
+        #
+        # # Для стоматологов автоматически устанавливаем стоматолога
+        # elif request and request.user.role_id == 3:
+        #     data['dentist'] = request.user
 
         # Проверка даты: дата не в прошлом
         appointment_date = data.get('appointment_date')

@@ -21,9 +21,7 @@ class CustomUserViewSet(UserViewSet):
     pagination_class = PageLimitPagination
 
     def get_permissions(self):
-        if self.action in ['retrieve', 'list']:
-            return (permissions.IsAuthenticatedOrReadOnly(), )
-        return super().get_permissions()
+        return (permissions.AllowAny(), )
 
     @action(
         methods=['PUT', 'PATCH'],
