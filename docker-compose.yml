@@ -21,12 +21,12 @@ services:
       - mongo
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings
-      - DATABASE_HOST=mongo
+      - DATABASE_HOST=db
       - DATABASE_PORT=27017
       - DATABASE_NAME=your_db_name   # добавьте имя вашей БД
     restart: unless-stopped
 
-  mongo:
+  db:
     container_name: mongo
     image: mongo:6.0
     ports:
