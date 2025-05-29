@@ -5,7 +5,7 @@ services:
   frontend:
     container_name: front
     build:
-      context: ../frontend
+      context: ./dentistry/frontend
     ports:
       - "3000:3000"
     depends_on:
@@ -14,7 +14,7 @@ services:
   backend:
     container_name: backend
     build:
-      context: ../  # корень проекта
+      context: ./dentistry  # Здесь лежит Dockerfile и весь backend-проект
     ports:
       - "8000:8000"
     depends_on:
