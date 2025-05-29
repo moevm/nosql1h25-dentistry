@@ -14,16 +14,16 @@ services:
   backend:
     container_name: backend
     build:
-      context: ./dentistry  # Здесь лежит Dockerfile и весь backend-проект
+      context: ./dentistry
     ports:
       - "8000:8000"
     depends_on:
-      - mongo
+      - db
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings
       - DATABASE_HOST=db
       - DATABASE_PORT=27017
-      - DATABASE_NAME=your_db_name   # добавьте имя вашей БД
+      - DATABASE_NAME=your_db_name
     restart: unless-stopped
 
   db:
