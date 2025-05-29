@@ -1,15 +1,25 @@
-version: '3.8'
-
 services:
+  backend:
+    # Для разработки текущие настройки из docker-compose.yml (volumes, command) подходят.
+    # Можно переопределить environment, если нужно:
+    environment:
+      - DEBUG=True
+      # - PYTHONASYNCIODEBUG=1 # Пример другой переменной для отладки
+
   frontend:
     build:
       dockerfile: Dockerfile.dev
     ports:
-      - "127.0.0.1:5173:5173"
-    environment:
-      - VITE_API_MOCK=${VITE_API_MOCK}
-    # depends_on:
-    #   - backend
+      - "5173:5173"
     volumes:
-      - ../frontend:/app
-      - /app/node_modules
+      - ../frontend/src:/app/src
+      - ../frontend/public:/app/public
+      - ../frontend/index.html:/app/index.html
+      - ../frontend/vite.config.js:/app/vite.config.js
+      - ../frontend/package.json:/app/package.json
+      - ../frontend/package-lock.json:/app/package-lock.json
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_API_MOCK=${VITE_API_MOCK}
+    # depends_on уже есть в основном docker-compose.yml

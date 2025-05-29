@@ -25,7 +25,6 @@ const addRecordButtonTitles = {
 const RecordsPage = () => {
   const { user } = useUser();
 
-  // Фильтры — сразу обновляем состояние
   const [filters, setFilters] = useState({
     date_from: "",
     date_to: "",
@@ -34,27 +33,23 @@ const RecordsPage = () => {
     showPast: false,
   });
 
-  // Основные данные
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Справочники врачей и пациентов
   const [dentists, setDentists] = useState({});
   const [patients, setPatients] = useState({});
 
-  // Popup логика
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [stageRecord, setStageRecord] = useState(null);
 
-  // Получение записей при изменении фильтров
   useEffect(() => {
     setLoading(true);
     setError(null);
     apiService.getRecords({
       date_from: filters.date_from,
       date_to: filters.date_to,
-      specialist: filters.specialist,
+      specialist: filters.dentist_name,
       patient: filters.patient,
       show_past: filters.showPast,
     })
@@ -63,11 +58,9 @@ const RecordsPage = () => {
       .finally(() => setLoading(false));
   }, [filters]);
 
-  // Получение данных о врачах и пациентах
   useEffect(() => {
     if (!records.length) return;
 
-    // Врачи
     const dentistIds = Array.from(new Set(records.map(r => r.dentist).filter(Boolean)));
     Promise.all(
       dentistIds
@@ -83,7 +76,6 @@ const RecordsPage = () => {
       }
     });
 
-    // Пациенты (если показываешь ФИО пациента)
     const patientIds = Array.from(new Set(records.map(r => r.patient).filter(Boolean)));
     Promise.all(
       patientIds
@@ -100,25 +92,28 @@ const RecordsPage = () => {
     });
   }, [records]);
 
-  // Popup handlers
   const handleSelectCard = (record) => (e) => {
     e.preventDefault();
     setSelectedRecord(record);
     setStageRecord("selected");
   };
+
   const handleCloseMoveOrCancelRecordPopup = (e) => {
     e.preventDefault();
     setSelectedRecord(null);
     setStageRecord(null);
   };
+
   const handleMoveRecord = (e) => {
     e.preventDefault();
     setStageRecord("move");
   };
+
   const handleOpenCancelRecordPopup = (e) => {
     e.preventDefault();
     setStageRecord("cancel");
   };
+
   const handleCancelRecord = (e) => {
     e.preventDefault();
     apiService.deleteRecordById(selectedRecord.id).then(() => {
@@ -126,6 +121,7 @@ const RecordsPage = () => {
       setStageRecord(null);
     });
   };
+
   const moveToNewDateTime = (dateTime) => {
     apiService.patchRecordById(selectedRecord.id, {
       appointment_date: dateTime.toISOString(),
@@ -156,8 +152,8 @@ const RecordsPage = () => {
         <FilterInputField
           placeholder="Поиск по врачу"
           type="search"
-          value={filters.specialist}
-          onChange={(e) => setFilters(prev => ({ ...prev, specialist: e.target.value }))}
+          value={filters.dentist_name}
+          onChange={(e) => setFilters(prev => ({ ...prev, dentist_name: e.target.value }))}
         />
         <OnlyRole role={["admin", "specialist"]}>
           <FilterInputField
@@ -186,28 +182,42 @@ const RecordsPage = () => {
         ) : (
           records.map((record) => {
             const dentist = dentists[record.dentist];
-            // Если нужен пациент:
-            // const patient = patients[record.patient];
+            const patient = patients[record.patient];
 
-            // Форматируем дату и время для показа
             const appointmentDate = new Date(record.appointment_date);
             const formattedDate = appointmentDate.toLocaleDateString();
-            const formattedTime = appointmentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const formattedTime = appointmentDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+
+            let image = defaultAvatar;
+            let fullname = "";
+            let serviceName = "";
+
+            if (user.role === "patient") {
+              image = dentist?.avatar || defaultAvatar;
+              fullname = dentist
+                ? `${dentist.last_name} ${dentist.first_name} ${dentist.second_name || ""}`
+                : "Неизвестный врач";
+              serviceName = dentist?.additional_info?.profession || "";
+            } else {
+              image = patient?.avatar || defaultAvatar;
+              fullname = patient
+                ? `${patient.last_name} ${patient.first_name} ${patient.second_name || ""}`
+                : "Неизвестный пациент";
+              serviceName = "";
+            }
 
             return (
               <RecordCard
                 key={record.id}
-                image={dentist?.avatar || defaultAvatar}
-                service_name={dentist?.additional_info?.profession || ""}
-                fullname={
-                  dentist
-                    ? `${dentist.last_name} ${dentist.first_name} ${dentist.second_name || ""}`
-                    : "Неизвестный врач"
-                }
+                image={image}
+                service_name={serviceName}
+                fullname={fullname}
                 iso_date={record.appointment_date}
-                onClick={handleSelectCard(record)}
-                // Можно добавить patient, если нужно
                 extraInfo={`${formattedDate} ${formattedTime}`}
+                onClick={handleSelectCard(record)}
               />
             );
           })
@@ -237,8 +247,6 @@ const RecordsPage = () => {
 };
 
 export default RecordsPage;
-
-// ------- Popup-компоненты ниже -------
 
 const MoveOrCancelRecordPopup = ({
   onClose,

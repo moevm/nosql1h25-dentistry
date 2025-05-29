@@ -73,7 +73,21 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(_('first name'), max_length=150, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     second_name = models.CharField(_('second name'), max_length=150, blank=True)
+    GENDER_CHOICES = [
+        ('male', 'Мужской'),
+        ('female', 'Женский'),
+        ('other', 'Другой'),
+        ('unknown', 'Не указан'),
+    ]
 
+    gender = models.CharField(
+        _('Пол'),
+        max_length=10,
+        choices=GENDER_CHOICES,
+        default='unknown',
+        blank=True,
+        null=True,
+    )
     email = models.EmailField('Электронная почта', unique=True)
     avatar = models.ImageField(
         upload_to='users/images/',

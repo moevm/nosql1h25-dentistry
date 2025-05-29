@@ -4,12 +4,10 @@ from .views import CustomUserViewSet
 
 
 router = routers.DefaultRouter()
-router.register(r'users', CustomUserViewSet)
+router.register(r'', CustomUserViewSet)
 
 app_name = 'users'
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/auth/', include('djoser.urls.authtoken')),
-    path('api/', include('djoser.urls')),
+    path('', include(router.urls)),
 ]
