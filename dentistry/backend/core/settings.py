@@ -95,13 +95,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': MONGO_NAME,
-        'HOST': MONGO_HOST,
-        'PORT': MONGO_PORT,
-        'USER': MONGO_DB_USER,
-        'PASSWORD': MONGO_DB_PASSWORD,
-        'AUTH_SOURCE': MONGO_AUTH_SOURCE,
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': MONGO_HOST,
+            'port': MONGO_PORT,
+            'username': MONGO_DB_USER,
+            'password': MONGO_DB_PASSWORD,
+            'authSource': MONGO_AUTH_SOURCE,
+        }
     }
 }
+
 
 
 # DATABASES = {

@@ -20,8 +20,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем все содержимое папки 'backend' (из dentistry/backend/)
 # в созданную папку '/project_root/backend/' внутри образа
 COPY backend/ ./backend/
-COPY backend/wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+# COPY backend/wait-for-it.sh /wait-for-it.sh
+# RUN chmod +x /wait-for-it.sh
 
 # Устанавливаем PYTHONPATH, чтобы Python мог найти пакет 'backend'
 ENV PYTHONPATH="/project_root:${PYTHONPATH}"

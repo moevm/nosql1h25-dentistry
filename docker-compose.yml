@@ -28,9 +28,7 @@ services:
       - MONGO_DB_PASSWORD=your_secure_password
       - MONGO_AUTH_SOURCE=admin
     command: >
-      sh -c "/wait-for-it.sh mongo:27017 --timeout=30 --strict -- 
-              python manage.py migrate && 
-              python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
 
   mongo:
     image: mongo:6.0
@@ -39,6 +37,9 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=your_secure_password
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh --quiet
       interval: 10s
