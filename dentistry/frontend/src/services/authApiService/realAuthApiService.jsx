@@ -1,8 +1,8 @@
 import axios from "axios";
-import { VITE_API_URL } from "../../config.js";
+import { API_URL } from "../../config.js";
 
 const api = axios.create({
-  baseURL: VITE_API_URL,
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,19 +19,15 @@ api.interceptors.request.use((config) => {
 
 const authApiService = {
   login: (data) => {
-    // Выполняем запрос на сервер
     return api
-      .post("/auth/token/login/", data)
+      .post("/api/auth/token/login/", data)
       .then((response) => {
-        // Проверяем, есть ли токен в ответе и сохраняем его в localStorage
         if (response.data && response.data.auth_token) {
-          // Сохраняем токен
           localStorage.setItem("authToken", response.data.auth_token);
         }
         return response;
       })
       .catch((error) => {
-        // Обрабатываем ошибку, если запрос не удался
         console.error("Ошибка при авторизации:", error);
         throw error;
       });
@@ -39,7 +35,7 @@ const authApiService = {
 
   register: (data) => {
     return api
-      .post("/auth/users/", data)
+      .post("/api/auth/users/", data)
       .then((response) => {
         return response;
       })
@@ -51,7 +47,7 @@ const authApiService = {
 
   getProfile: () => {
     return api
-      .get("/auth/users/me/")
+      .get("/api/auth/users/me/")
       .then((response) => {
         return response;
       })
