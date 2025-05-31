@@ -89,7 +89,7 @@ MONGO_PORT = int(os.getenv('MONGO_PORT', '27017'))
 MONGO_NAME = os.getenv('MONGO_NAME', 'dentistry_db')
 MONGO_DB_USER = os.getenv('MONGO_DB_USER')
 MONGO_DB_PASSWORD = os.getenv('MONGO_DB_PASSWORD')
-MONGO_AUTH_SOURCE = os.getenv('MONGO_AUTH_SOURCE', MONGO_NAME)
+MONGO_AUTH_SOURCE = os.getenv('MONGO_AUTH_SOURCE', 'admin')
 
 DATABASES = {
     'default': {
