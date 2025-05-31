@@ -11,7 +11,21 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django')
 
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True 
+
+# CORS_ALLOWED_ORIGINS = [ 
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000", 
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173", 
+#     "http://localhost:8000",
+#     "http://127.0.0.1:8000",
+#     "http://backend:8000",
+#     "http://frontend:3000",  # если используется в docker-compose
+#     "http://frontend:8000",  # если используется в docker-compose
+#     "http://172.18.0.4:3000",
+#     "http://172.18.0.4:8000",
+# ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -47,12 +61,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://frontend:5173",
-]
-
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'backend.core.urls'
@@ -76,7 +84,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.core.wsgi.application'
 
 
-MONGO_HOST = os.getenv('MONGO_HOST', 'localhost')
+MONGO_HOST = os.getenv('MONGO_HOST', 'db')
 MONGO_PORT = int(os.getenv('MONGO_PORT', '27017'))
 MONGO_NAME = os.getenv('MONGO_NAME', 'dentistry_db')
 MONGO_DB_USER = os.getenv('MONGO_DB_USER')
@@ -87,20 +95,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': MONGO_NAME,
-        'USER': MONGO_DB_USER,
-        'PASSWORD': MONGO_DB_PASSWORD,
-        'HOST': MONGO_HOST,
-        'PORT': MONGO_PORT,
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': MONGO_HOST,
+            'port': MONGO_PORT,
+            'username': MONGO_DB_USER,
+            'password': MONGO_DB_PASSWORD,
+            'authSource': MONGO_AUTH_SOURCE,
+        }
     }
 }
-
-
-if MONGO_DB_USER:
-    DATABASES['default']['CLIENT']['username'] = MONGO_DB_USER
-    DATABASES['default']['CLIENT']['password'] = MONGO_DB_PASSWORD
-    DATABASES['default']['CLIENT']['authSource'] = MONGO_AUTH_SOURCE
-    # DATABASES['default']['CLIENT']['authMechanism'] = 'SCRAM-SHA-1'
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {

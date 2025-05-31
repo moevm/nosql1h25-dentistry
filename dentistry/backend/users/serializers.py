@@ -26,7 +26,7 @@ class CustomUserSerializer(UserSerializer):
 
     def get_id(self, obj):
         # если используешь djongo или другой MongoDB адаптер, попробуй:
-        return int(obj.pk)
+        return str(obj.pk)
 
 
 class AvatarSerializer(CustomUserSerializer):
