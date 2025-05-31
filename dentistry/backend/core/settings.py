@@ -84,7 +84,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.core.wsgi.application'
 
 
-MONGO_HOST = os.getenv('MONGO_HOST', 'mongo')
+MONGO_HOST = os.getenv('MONGO_HOST', 'db')
 MONGO_PORT = int(os.getenv('MONGO_PORT', '27017'))
 MONGO_NAME = os.getenv('MONGO_NAME', 'dentistry_db')
 MONGO_DB_USER = os.getenv('MONGO_DB_USER')
@@ -105,22 +105,6 @@ DATABASES = {
         }
     }
 }
-
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'dentrestry_db',
-#         'ENFORCE_SCHEMA': False,
-#         'CLIENT': {
-#             'host': 'localhost',
-#             'port': 27017,
-#         }
-#     }
-# }
-
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
