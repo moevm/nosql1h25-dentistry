@@ -19,6 +19,12 @@ class RecordFilter(django_filters.FilterSet):
         label='Patient ID',
         help_text="Filter by patient's ID"
     )
+    
+    patient_name = django_filters.CharFilter(
+        method='filter_patient_by_fullname',
+        label='Patient Name',
+        help_text="Filter by patient's full name"
+    )
 
     date_from = django_filters.DateFilter(
         method='filter_date_from',
@@ -57,4 +63,12 @@ class RecordFilter(django_filters.FilterSet):
             models.Q(dentist__first_name__icontains=value) |
             models.Q(dentist__last_name__icontains=value) |
             models.Q(dentist__second_name__icontains=value)
+        )
+
+    def filter_patient_by_fullname(self, queryset, name, value):
+        """Фильтрация по ФИО пациента (частичный поиск)"""
+        return queryset.filter(
+            models.Q(patient__first_name__icontains=value) |
+            models.Q(patient__last_name__icontains=value) |
+            models.Q(patient__second_name__icontains=value)
         )
