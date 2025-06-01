@@ -50,7 +50,7 @@ const RecordsPage = () => {
       date_from: filters.date_from,
       date_to: filters.date_to,
       specialist: filters.dentist_name,
-      patient: filters.patient,
+      patient_name: filters.patient_name, //
       show_past: filters.showPast,
     })
       .then(res => setRecords(res.data.results || []))
@@ -149,18 +149,20 @@ const RecordsPage = () => {
           value={filters.date_to}
           onChange={(e) => setFilters(prev => ({ ...prev, date_to: e.target.value }))}
         />
-        <FilterInputField
-          placeholder="Поиск по врачу"
-          type="search"
-          value={filters.dentist_name}
-          onChange={(e) => setFilters(prev => ({ ...prev, dentist_name: e.target.value }))}
-        />
+        <OnlyRole role={["admin", "patient", "specialist"]}>
+          <FilterInputField
+            placeholder="Поиск по врачу"
+            type="search"
+            value={filters.dentist_name}
+            onChange={(e) => setFilters(prev => ({ ...prev, dentist_name: e.target.value }))}
+          />
+        </OnlyRole>
         <OnlyRole role={["admin", "specialist"]}>
           <FilterInputField
             placeholder="Поиск по пациенту"
             type="search"
-            value={filters.patient}
-            onChange={(e) => setFilters(prev => ({ ...prev, patient: e.target.value }))}
+            value={filters.patient_name}
+            onChange={(e) => setFilters(prev => ({ ...prev, patient_name: e.target.value }))}
           />
         </OnlyRole>
         <label>
