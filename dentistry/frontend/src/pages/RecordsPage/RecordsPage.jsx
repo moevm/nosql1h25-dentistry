@@ -212,15 +212,17 @@ const RecordsPage = () => {
             }
 
             return (
-              <RecordCard
-                key={record.id}
-                image={image}
-                service_name={serviceName}
-                fullname={fullname}
-                iso_date={record.appointment_date}
-                extraInfo={`${formattedDate} ${formattedTime}`}
-                onClick={handleSelectCard(record)}
-              />
+              <Link to={`/records/${record.id}`} key={record.id} style={{ textDecoration: "none" }}>
+                <RecordCard
+                  key={record.id}
+                  image={image}
+                  service_name={serviceName}
+                  fullname={fullname}
+                  iso_date={record.appointment_date}
+                  extraInfo={`${formattedDate} ${formattedTime}`}
+                  onClick={handleSelectCard(record)}
+                />
+              </Link>
             );
           })
         )}

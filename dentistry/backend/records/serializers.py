@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.utils import timezone
 from .models import Record
 from ..users.models import CustomUser
+# from ..users.serializers import CustomUserSerializer
 
 
 class RecordSerializer(serializers.ModelSerializer):
@@ -44,3 +45,11 @@ class RecordSerializer(serializers.ModelSerializer):
             })
 
         return data
+
+# class RecordDetailSerializer(serializers.ModelSerializer):
+#     dentist = CustomUserSerializer(read_only=True)
+#     patient = CustomUserSerializer(read_only=True)
+
+#     class Meta:
+#         model = Record
+#         fields = '__all__'
