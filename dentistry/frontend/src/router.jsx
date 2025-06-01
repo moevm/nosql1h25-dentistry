@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
 import RecordsPage from "./pages/RecordsPage";
+import RecordPage from "./pages/RecordPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import AddRecordPage from "./pages/AddRecordPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -114,6 +115,10 @@ export const router = createBrowserRouter([
         ),
         children: [
           { path: "records", element: <RecordsPage /> },
+          {
+            path: "records/:id",
+            element: <RecordPage />,
+          },
 
           {
             path: "add_record",

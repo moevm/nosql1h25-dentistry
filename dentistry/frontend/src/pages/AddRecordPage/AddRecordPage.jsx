@@ -137,14 +137,14 @@ const AddRecordPage = () => {
       <div className={styles.frame}>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field_container}>
-            <AddFormInputField
+            {/* <AddFormInputField
               label="Услуга"
               name="service"
               type="text"
               value={formData.service}
               onChange={handleChange}
               required
-            />
+            /> */}
 
             <label className={styles.label} htmlFor="selectedUserId">
               {currentUser.role_id === 2 ? "Врач" : "Клиент"}
