@@ -4,12 +4,15 @@ import Button from "../../components/Button";
 import FullNameFromUser from "../../components/FullNameFromUser";
 import OnlyRole from "../../components/OnlyRole";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import { usePatients } from "../../hooks/apiHooks";
 import defaultAvatar from "../../assets/images/img.png"; // запасное изображение
 
 const PatientsPage = () => {
-  const { data, loading, error } = usePatients();
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const { results, count, loading, error } = usePatients({}, page, limit);
   const navigate = useNavigate();
 
   const handleAddPatient = (e) => {
@@ -24,6 +27,8 @@ const PatientsPage = () => {
   const handlePatientClick = (id) => {
     navigate(`/patients/${id}`);
   };
+
+  const totalPages = Math.ceil(count / limit);
 
   return (
     <>
@@ -45,10 +50,10 @@ const PatientsPage = () => {
           <div className={styles.loading}>Загрузка...</div>
         ) : error ? (
           <div className={styles.error}>Ошибка: {error}</div>
-        ) : data.length === 0 ? (
+        ) : results.length === 0 ? (
           <div className={styles.empty}>Нет записей</div>
         ) : (
-          data.map((el) => (
+          results.map((el) => (
             <Card
               key={el.id}
               image={el.avatar || defaultAvatar}
@@ -62,6 +67,21 @@ const PatientsPage = () => {
           ))
         )}
       </div>
+      {totalPages > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+          <button onClick={() => setPage(page - 1)} disabled={page === 1}>Назад</button>
+          {Array.from({ length: totalPages }).map((_, idx) => (
+            <button
+              key={idx + 1}
+              onClick={() => setPage(idx + 1)}
+              style={{ fontWeight: page === idx + 1 ? 'bold' : 'normal' }}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>Вперёд</button>
+        </div>
+      )}
     </>
   );
 };
