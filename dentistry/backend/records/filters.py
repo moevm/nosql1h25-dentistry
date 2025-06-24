@@ -2,6 +2,7 @@ import django_filters
 from datetime import datetime, timedelta
 from .models import Record
 from django.db import models
+from django.utils import timezone
 
 class RecordFilter(django_filters.FilterSet):
     dentist = django_filters.NumberFilter(
@@ -42,9 +43,14 @@ class RecordFilter(django_filters.FilterSet):
         label='Status'
     )
 
+    show_past = django_filters.BooleanFilter(
+        method='filter_show_past',
+        label='Show Past Records'
+    )
+
     class Meta:
         model = Record
-        fields = ['dentist', 'specialist', 'patient', 'status']
+        fields = ['dentist', 'specialist', 'patient', 'status', 'show_past']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -72,3 +78,16 @@ class RecordFilter(django_filters.FilterSet):
             models.Q(patient__last_name__icontains=value) |
             models.Q(patient__second_name__icontains=value)
         )
+
+    def filter_show_past(self, queryset, name, value):
+        """Фильтрация прошедших записей"""
+        now = timezone.now()
+        
+        # Обрабатываем разные типы значений (булево, строка)
+        if value in [False, 'false', '0', 0]:  # Скрываем прошедшие записи
+            return queryset.filter(appointment_date__gte=now)
+        elif value in [True, 'true', '1', 1]:  # Показываем все записи
+            return queryset
+        else:
+            # По умолчанию показываем все записи
+            return queryset

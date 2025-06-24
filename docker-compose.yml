@@ -30,6 +30,7 @@ services:
     command: >
       sh -c "db:27017 --timeout=10 --strict -- 
               python manage.py migrate && 
+              python manage.py generate_test_data &&
               python manage.py runserver 0.0.0.0:8000"
 
   db:

@@ -5,6 +5,7 @@ from rest_framework.exceptions import PermissionDenied
 from .models import Record
 from .serializers import RecordSerializer
 from .filters import RecordFilter
+from ..users.paginations import PageLimitPagination
 
 class IsDentistOrAdminOrPatientReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -23,6 +24,7 @@ class RecordViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = RecordFilter
     permission_classes = [permissions.AllowAny]
+    pagination_class = PageLimitPagination
 
     def get_queryset(self):
         user = self.request.user
