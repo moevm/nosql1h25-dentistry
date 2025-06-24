@@ -21,7 +21,7 @@ api.interceptors.request.use((config) => {
 
 const apiService = {
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser[]>>} */
-  getDentists: () => api.get("/dentists/"),
+  getDentists: (params) => api.get("/dentists/", { params }),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */
@@ -63,7 +63,7 @@ const apiService = {
   deleteDentistAvatar: () => api.delete("/dentists/me/avatar/"),
 
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser[]>>} */
-  getClients: () => api.get("/clients/"),
+  getClients: (params) => api.get("/clients/", { params }),
 
   /** @param {CustomUser} data */
   /** @returns {Promise<import("axios").AxiosResponse<CustomUser>>} */

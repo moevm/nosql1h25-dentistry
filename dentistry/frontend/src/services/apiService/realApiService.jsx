@@ -18,7 +18,7 @@ api.interceptors.request.use((config) => {
 
 const apiService = {
   // Dentists
-  getDentists: () => api.get("/dentists/"),
+  getDentists: (params) => api.get("/dentists/", { params }),
 
   createDentist: (data) => api.post("/dentists", data),
 
@@ -41,7 +41,7 @@ const apiService = {
   deleteDentistAvatar: () => api.delete("/dentists/me/avatar"),
 
   // Clients
-  getClients: () => api.get("/clients"),
+  getClients: (params) => api.get("/clients/", { params }),
 
   createClient: (data) => api.post("/clients", data),
 

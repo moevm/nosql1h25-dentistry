@@ -9,6 +9,7 @@ import defaultAvatar from "../../assets/images/img.png";
 import Popup from "../../components/popups/Popup";
 import apiService from "../../services/apiService";
 import { useUser } from "../../context/UserContext";
+import { useRecords } from "../../hooks/apiHooks";
 
 const titles = {
   patient: "Мои записи",
@@ -24,39 +25,29 @@ const addRecordButtonTitles = {
 
 const RecordsPage = () => {
   const { user } = useUser();
-
+  const [page, setPage] = useState(1);
+  const limit = 10;
   const [filters, setFilters] = useState({
     date_from: "",
     date_to: "",
     specialist: "",
+    patient_name: "",
     patient: user.role === "patient" ? user.id : "",
-    showPast: false,
+    show_past: false,
   });
 
-  const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Подготавливаем фильтры для API (убираем пустые значения)
+  const apiFilters = Object.fromEntries(
+    Object.entries(filters).filter(([key, value]) => value !== "" && value !== null && value !== undefined)
+  );
+
+  const { results: records, count, loading, error } = useRecords(apiFilters, page, limit);
 
   const [dentists, setDentists] = useState({});
   const [patients, setPatients] = useState({});
 
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [stageRecord, setStageRecord] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    apiService.getRecords({
-      date_from: filters.date_from,
-      date_to: filters.date_to,
-      specialist: filters.dentist_name,
-      patient_name: filters.patient_name, //
-      show_past: filters.showPast,
-    })
-      .then(res => setRecords(res.data.results || []))
-      .catch(err => setError(err.message || "Ошибка загрузки"))
-      .finally(() => setLoading(false));
-  }, [filters]);
 
   useEffect(() => {
     if (!records.length) return;
@@ -117,7 +108,7 @@ const RecordsPage = () => {
   const handleCancelRecord = (e) => {
     e.preventDefault();
     apiService.deleteRecordById(selectedRecord.id).then(() => {
-      setRecords(prev => prev.filter(r => r.id !== selectedRecord.id));
+      setPage(1);
       setStageRecord(null);
     });
   };
@@ -127,6 +118,8 @@ const RecordsPage = () => {
       appointment_date: dateTime.toISOString(),
     }).then(() => setStageRecord(null));
   };
+
+  const totalPages = Math.ceil(count / limit);
 
   return (
     <>
@@ -153,8 +146,8 @@ const RecordsPage = () => {
           <FilterInputField
             placeholder="Поиск по врачу"
             type="search"
-            value={filters.dentist_name}
-            onChange={(e) => setFilters(prev => ({ ...prev, dentist_name: e.target.value }))}
+            value={filters.specialist}
+            onChange={(e) => setFilters(prev => ({ ...prev, specialist: e.target.value }))}
           />
         </OnlyRole>
         <OnlyRole role={["admin", "specialist"]}>
@@ -168,8 +161,8 @@ const RecordsPage = () => {
         <label>
           <input
             type="checkbox"
-            checked={filters.showPast}
-            onChange={(e) => setFilters(prev => ({ ...prev, showPast: e.target.checked }))}
+            checked={filters.show_past}
+            onChange={(e) => setFilters(prev => ({ ...prev, show_past: e.target.checked }))}
           />
           <span>Прошедшие записи</span>
         </label>
@@ -227,6 +220,21 @@ const RecordsPage = () => {
           })
         )}
       </div>
+      {totalPages > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+          <button onClick={() => setPage(page - 1)} disabled={page === 1}>Назад</button>
+          {Array.from({ length: totalPages }).map((_, idx) => (
+            <button
+              key={idx + 1}
+              onClick={() => setPage(idx + 1)}
+              style={{ fontWeight: page === idx + 1 ? 'bold' : 'normal' }}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>Вперёд</button>
+        </div>
+      )}
       {stageRecord === "selected" && (
         <MoveOrCancelRecordPopup
           onClose={handleCloseMoveOrCancelRecordPopup}
