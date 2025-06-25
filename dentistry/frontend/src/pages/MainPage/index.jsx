@@ -34,11 +34,14 @@ const AdminMainPage = () => (
   <MainPage
     title={"ГЛАВНАЯ СТРАНИЦА АДМИНА"}
     first_link_list={[
+      { name: "Админ панель", to: "/admin" },
       { name: "Посмотреть записи", to: "/records" },
       { name: "Управлять врачами", to: "/specialists" },
       { name: "Управлять пациентами", to: "/patients" },
     ]}
     second_list_link={[
+      { name: "Добавить пациента", to: "/add-patient" },
+      { name: "Добавить специалиста", to: "/add-specialist" },
       { name: "Создать запись", to: "/add_record" },
       { name: "Перейти в мой профиль", to: "/profile" },
     ]}

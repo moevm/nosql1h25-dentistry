@@ -6,7 +6,7 @@ import { useAddDentist, useBulkAddDentists } from "../../../hooks/apiHooks";
 
 const AddSpecialistPage = () => {
   const { addDentist, loading, success } = useAddDentist();
-  const { addBulkAddDentists } = useBulkAddDentists();
+  const { bulkAddDentists } = useBulkAddDentists();
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -66,7 +66,7 @@ const AddSpecialistPage = () => {
       alert("Пожалуйста, выберите файл для загрузки.");
       return;
     }
-    addBulkAddDentists(file);
+    bulkAddDentists(file);
   };
 
   return (

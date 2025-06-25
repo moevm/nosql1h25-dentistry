@@ -1,8 +1,15 @@
 ### Отладочные пользователи
+
+Администратор:
+```
+admin@dentistry.ru
+c2S-ZLn-hTx-8cy
+```
+
 Пациент
 ```
 client@mail.ru
-JqP-4RB-8Xi-Ffd
+c2S-ZLn-hTx-8cy
 ```
 Врач:
 ```

@@ -13,3 +13,8 @@ export { usePatients } from "./usePatients";
 export { useRecords } from "./useRecords";
 export { useSpecialists } from "./useSpecialists";
 export { useUserById } from "./useUserById";
+export { useRecordById } from "./useRecordById";
+
+// Admin hooks
+export { useAdminDashboard } from "./useAdminDashboard";
+export { useAdminUsers } from "./useAdminUsers";

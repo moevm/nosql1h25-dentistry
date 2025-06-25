@@ -14,10 +14,12 @@ import SpecialistsPage from "./pages/SpecialistsPage";
 import PatientsPage from "./pages/PatientsPage";
 import AddPatientPage from "./pages/admin/AddPatientPage";
 import AddSpecialistPage from "./pages/admin/AddSpecialistPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 
 // Import the layout components
 import PatientLayout from "./components/pageLayouts/PatientLayout";
 import SpecialistLayout from "./components/pageLayouts/SpecialistLayout";
+import AdminLayout from "./components/pageLayouts/AdminLayout";
 
 // Import the outlet component
 import AuthShell from "./components/AuthShell";
@@ -61,8 +63,12 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute allowedRoles={["admin"]} />,
     children: [
       {
-        element: <SpecialistLayout />,
+        element: <AdminLayout />,
         children: [
+          {
+            path: "/admin",
+            element: <AdminDashboardPage />,
+          },
           {
             path: "/add-patient",
             element: <AddPatientPage />,
@@ -109,7 +115,7 @@ export const router = createBrowserRouter([
             layouts={{
               patient: PatientLayout,
               specialist: SpecialistLayout,
-              admin: SpecialistLayout,
+              admin: AdminLayout,
             }}
           />
         ),

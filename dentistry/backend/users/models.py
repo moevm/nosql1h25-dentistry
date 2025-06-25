@@ -19,12 +19,12 @@ class Role:
     }
 
 
-class SupportRole(Role):
-    """Поддержка."""
+class AdminRole(Role):
+    """Администратор."""
 
     id: int = 1
-    alias: str = 'support'
-    title: str = _('Support')
+    alias: str = 'admin'
+    title: str = _('Admin')
 
     schema: dict = {
         "fields": {},
@@ -95,9 +95,6 @@ class CustomUser(AbstractUser):
         verbose_name='Аватар',
     )
     
-    class Meta:
-        app_label = 'users'
-
     phone = models.CharField(_('Телефон'), null=True, max_length=20)
     birth_date = models.DateField(_('Дата рождения'), null=True, blank=True)
 
@@ -106,19 +103,19 @@ class CustomUser(AbstractUser):
     dt_add = models.DateTimeField(_('Дата добавления'), auto_now_add=True)
     dt_upd = models.DateTimeField(_('Дата обновления'), auto_now=True)
 
-    class Meta:
-        app_label = 'users'
-
-    role_id = models.PositiveIntegerField(_('Role'), default=ClientRole.id  )
+    role_id = models.PositiveIntegerField(_('Role'), default=ClientRole.id)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     ROLES = {
-        SupportRole.id : SupportRole,
+        AdminRole.id : AdminRole,
         ClientRole.id : ClientRole,
         DentistRole.id : DentistRole
     }
+
+    class Meta:
+        app_label = 'users'
 
     @property
     def current_role(self):
@@ -129,9 +126,9 @@ class CustomUser(AbstractUser):
         return self.ROLES.get(self.role_id)
 
     @property
-    def is_support(self) -> bool:
-        """Флаг, указывающий на то, есть ли среди ролей пользователя роль службы поддержки."""
-        return bool(self.check_roles(roles=[SupportRole]))
+    def is_admin(self) -> bool:
+        """Флаг, указывающий на то, есть ли среди ролей пользователя роль администратора."""
+        return bool(self.check_roles(roles=[AdminRole]))
 
     @property
     def is_client(self) -> bool:

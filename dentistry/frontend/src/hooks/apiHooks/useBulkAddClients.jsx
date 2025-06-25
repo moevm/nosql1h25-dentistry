@@ -4,25 +4,22 @@ import apiService from "../../services/apiService";
 export const useBulkAddClients = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  const addBulkAddClients = async (file) => {
+  const bulkAddClients = async (file) => {
     setLoading(true);
     setError(null);
-    setSuccess(null);
-
-    const formData = new FormData();
-    formData.append("file", file);
-
+    setSuccess(false);
     try {
-      const response = await apiService.createDentistBulk(formData);
-      setSuccess(response.data.message);
+      const response = await apiService.createClientBulk(file);
+      setSuccess(true);
+      return response.data;
     } catch (err) {
-      setError(err.response ? err.response.data.message : "An error occurred");
+      setError(err.response?.data?.error || err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  return { addBulkAddClients, loading, error, success };
+  return { bulkAddClients, loading, error, success };
 };

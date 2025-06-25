@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_filters',
     # 'urlshortner',
     # 'backend.core',
+    'backend.adminpanel',
     'backend.users',
     'backend.dentists',
     'backend.clients',
