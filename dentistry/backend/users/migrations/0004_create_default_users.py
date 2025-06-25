@@ -8,6 +8,27 @@ def create_users(apps, schema_editor):
 
     users_data = [
         {
+            "id": 0,
+            "username": "admin",
+            "email": "admin@dentistry.ru",
+            "first_name": "Главный",
+            "last_name": "Администратор",
+            "second_name": "Системный",
+            "password": "pbkdf2_sha256$260000$cTxm689kX6LIy5QaMPAYN4$xDAH6NDO+PM2ydS+dfChdUFv5VYZjczTsNgIk75Vq1k=",  #c2S-ZLn-hTx-8cy
+            "is_superuser": True,
+            "is_staff": True,
+            "is_active": True,
+            "last_login": None,
+            "date_joined": datetime.fromisoformat("2025-01-01T12:00:00.000+00:00"),
+            "dt_add": datetime.fromisoformat("2025-01-01T12:00:00.000+00:00"),
+            "dt_upd": datetime.fromisoformat("2025-01-01T12:00:00.000+00:00"),
+            "role_id": 1,  # AdminRole
+            "additional_info": {
+                "department": "IT",
+                "access_level": "full"
+            },
+        },
+        {
             "id": 1,
             "username": "van1kov",
             "email": "van1kov@mail.ru",

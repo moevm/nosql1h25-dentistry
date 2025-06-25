@@ -20,8 +20,21 @@ const SpecialistsPage = () => {
     navigate("/add-specialist");
   };
 
-  const handleExportSpecialists = (e) => {
+  const handleExportSpecialists = async (e) => {
     e.preventDefault();
+    try {
+      const response = await import("../../services/apiService").then(module => module.default);
+      const exportResponse = await response.exportUsers();
+      const url = window.URL.createObjectURL(new Blob([exportResponse.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `specialists_export_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      alert('Ошибка при экспорте специалистов');
+    }
   };
 
   const handleSpecialistClick = (id) => {

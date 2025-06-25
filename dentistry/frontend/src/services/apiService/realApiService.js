@@ -129,6 +129,39 @@ const apiService = {
   /** @param {number} id */
   /** @returns {Promise<import("axios").AxiosResponse<void>>} */
   deleteRecordById: (id) => api.delete(`/records/${id}/`),
+
+  /** @returns {Promise<import("axios").AxiosResponse<void>>} */
+  getAdminDashboard: () => api.get("/admin/dashboard/"),
+
+  getAdminUsers: (params) => api.get("/admin/users/", { params }),
+
+  deleteUser: (userId) => api.delete(`/admin/users/${userId}/`),
+
+  toggleUserActive: (userId) => api.patch(`/admin/users/${userId}/toggle/`),
+
+  exportUsers: () => api.get("/admin/export/users/", { responseType: 'blob' }),
+
+  exportRecords: () => api.get("/admin/export/records/", { responseType: 'blob' }),
+
+  /** @param {File} file */
+  /** @returns {Promise<import("axios").AxiosResponse<void>>} */
+  createDentistBulk: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post("/dentists/bulk/", formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+
+  /** @param {File} file */
+  /** @returns {Promise<import("axios").AxiosResponse<void>>} */
+  createClientBulk: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post("/clients/bulk/", formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
 };
 
 export default apiService;

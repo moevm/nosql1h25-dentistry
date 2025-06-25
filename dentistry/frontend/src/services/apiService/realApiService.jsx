@@ -75,6 +75,36 @@ const apiService = {
   patchRecordById: (id, data) => api.patch(`/records/${id}/`, data),
 
   deleteRecordById: (id) => api.delete(`/records/${id}/`),
+
+  // Admin API
+  getAdminDashboard: () => api.get("/admin/dashboard/"),
+
+  getAdminUsers: (params) => api.get("/admin/users/", { params }),
+
+  deleteUser: (userId) => api.delete(`/admin/users/${userId}/`),
+
+  toggleUserActive: (userId) => api.patch(`/admin/users/${userId}/toggle/`),
+
+  exportUsers: () => api.get("/admin/export/users/", { responseType: 'blob' }),
+
+  exportRecords: () => api.get("/admin/export/records/", { responseType: 'blob' }),
+
+  // Bulk operations (updated to use admin endpoints if needed)
+  createDentistBulk: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post("/dentists/bulk-create/", formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+
+  createClientBulk: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post("/clients/bulk-create/", formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
 };
 
 export default apiService;

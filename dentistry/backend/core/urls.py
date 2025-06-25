@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
     path('api/', include([
+        path('admin/', include(('backend.adminpanel.urls', 'adminpanel'), namespace='adminpanel')),
         path('users/', include(('backend.users.urls', 'users'), namespace='users')),
         path('clients/', include(('backend.clients.urls', 'clients'), namespace='clients')),
         path('dentists/', include(('backend.dentists.urls', 'dentists'), namespace='dentists')),

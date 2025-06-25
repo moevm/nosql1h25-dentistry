@@ -22,4 +22,4 @@ const useRecordById = (id) => {
   return { data, loading, error };
 };
 
-export default useRecordById;
+export { useRecordById };
